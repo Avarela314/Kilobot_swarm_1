@@ -1,0 +1,15 @@
+release/kilowindow.o
+release/kilogui.o
+release/calibrate.o
+release/serialwin.o
+release/ftdiconn.o
+release/intelhex.o
+release/vusbconn.o
+release/serialconn.o
+release/qrc_kilogui.o
+release/moc_kilowindow.o
+release/moc_calibrate.o
+release/moc_serialwin.o
+release/moc_ftdiconn.o
+release/moc_vusbconn.o
+release/moc_serialconn.o
