@@ -1,0 +1,15 @@
+debug/kilowindow.o
+debug/kilogui.o
+debug/calibrate.o
+debug/serialwin.o
+debug/ftdiconn.o
+debug/intelhex.o
+debug/vusbconn.o
+debug/serialconn.o
+debug/qrc_kilogui.o
+debug/moc_kilowindow.o
+debug/moc_calibrate.o
+debug/moc_serialwin.o
+debug/moc_ftdiconn.o
+debug/moc_vusbconn.o
+debug/moc_serialconn.o
