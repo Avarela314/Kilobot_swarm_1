@@ -4,6 +4,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include "calibrate.h"
+#include <QMessageBox>
 
 CalibWindow::CalibWindow(QString title, QWidget *parent): QWidget(parent) {
     QPushButton *save_button = new QPushButton("&Save");
@@ -87,7 +88,7 @@ CalibWindow::CalibWindow(QString title, QWidget *parent): QWidget(parent) {
     values[3] = straight_input1;
     values[4] = straight_input2;
 
-    QObject::connect(signalMapper, SIGNAL(mapped(int)), this, SLOT(updateCalib(int)));
+    QObject::connect(signalMapper, SIGNAL(mappedInt(int)), this, SLOT(updateCalib(int)));
 }
 
 void CalibWindow::updateCalib(int v) { 
