@@ -27,7 +27,7 @@ static const kilo_cmd_t KILO_COMMANDS[] = {
     {"Reset", RESET},
     {"Run", RUN},
     {"Pause", WAKEUP},
-    {"Slep", SLEEP},
+    {"Sleep", SLEEP},
     {"Voltage", VOLTAGE},
     {"LedToggle", COMMAND_LEDTOGGLE}
 };
@@ -36,7 +36,6 @@ static const int NUM_KILO_COMMANDS = sizeof(KILO_COMMANDS)/sizeof(kilo_cmd_t);
 
 
 KiloWindow::KiloWindow(QWidget *parent): QWidget(parent), device(0), sending(false), connected(false) {
-    //QMessageBox::information(this, "Debug", "contructor reached");
     // Create status bar
     status = new QStatusBar();
     status->showMessage("disconnected.");
@@ -159,7 +158,7 @@ QGroupBox *KiloWindow::createFileInput() {
 
     mapper->setMapping(bootload_button, BOOT);
     QObject::connect(bootload_button, SIGNAL(clicked()), mapper, SLOT(map()));
-    QObject::connect(mapper, SIGNAL(mapped(int)), this, SLOT(sendMessage(int)));
+    QObject::connect(mapper, SIGNAL(mappedInt(int)), this, SLOT(sendMessage(int)));
     QObject::connect(choose_button, SIGNAL(clicked()), this, SLOT(chooseProgramFile()));
     QObject::connect(upload_button, SIGNAL(clicked()), this, SLOT(uploadProgram()));
 
@@ -182,9 +181,12 @@ QGroupBox *KiloWindow::createCommands() {
     QGridLayout *layout = new QGridLayout;
 
     int split = 2;
-
+    //bool ok1;
     for (int i=0; i<NUM_KILO_COMMANDS; i++) {
         QPushButton *button = new QPushButton(KILO_COMMANDS[i].name);
+        /*connect(button, &QPushButton::clicked, this, [this](){
+            QMessageBox::information(this, "debug", "button clicked");
+        });*/
         if (KILO_COMMANDS[i].type != COMMAND_LEDTOGGLE) {
             button->setCheckable(true);
         }
@@ -195,9 +197,10 @@ QGroupBox *KiloWindow::createCommands() {
             layout->addWidget(button, i, 0);
         }
         mapper->setMapping(button, (int)KILO_COMMANDS[i].type);
-        QObject::connect(button, SIGNAL(clicked()), mapper, SLOT(map()));
+        /*ok1 = */QObject::connect(button, SIGNAL(clicked()), mapper, SLOT(map()));
     }
-    QObject::connect(mapper, SIGNAL(mapped(int)), this, SLOT(sendMessage(int)));
+    /*bool ok2 = */QObject::connect(mapper, SIGNAL(mappedInt(int)), this, SLOT(sendMessage(int)));
+    //QMessageBox::information(this, "debug", QString("connections: %1, %2").arg(ok1).arg(ok2));
 
     box->setLayout(layout);
 
@@ -361,7 +364,6 @@ void KiloWindow::stopSending() {
 }
 
 void KiloWindow::sendMessage(int type_int) {
-    //QMessageBox::information(this, "Debug", "sendMessage()");
     unsigned char type = (unsigned char)type_int;
     QByteArray packet(PACKET_SIZE, 0);
     if (type == COMMAND_STOP) {
