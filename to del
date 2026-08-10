@@ -1,103 +1,19 @@
---     Linker flags (Release):      -Wl,--gc-sections
---     Linker flags (Debug):        -Wl,--gc-sections
---     ccache:                      NO
---     Precompiled headers:         NO
---     Extra dependencies:          pthread
---     3rdparty dependencies:
---
---   OpenCV modules:
---     To be built:                 calib3d core dnn features2d flann gapi highgui imgcodecs imgproc ml objdetect photo stitching video videoio
---     Disabled:                    world
---     Disabled by dependency:      -
---     Unavailable:                 java python2 python3 ts
---     Applications:                apps
---     Documentation:               NO
---     Non-free algorithms:         NO
---
---   Windows RT support:            NO
---
---   GUI:                           WIN32UI
---     Win32 UI:                    YES
---     VTK support:                 NO
---
---   Media I/O:
---     ZLib:                        build (ver 1.3.2)
---     JPEG:                        build-libjpeg-turbo (ver 3.1.2-70)
---       SIMD Support Request:      YES
---       SIMD Support:              NO
---     WEBP:                        build (ver decoder: 0x0210, encoder: 0x0210, demux: 0x0107)
---     AVIF:                        NO
---     PNG:                         build (ver 1.6.57)
---       SIMD Support Request:      YES
---       SIMD Support:              YES (Intel SSE)
---       Metadata Support:          EXIF XMP ICC cICP
---     TIFF:                        build (ver 42 - 4.7.1)
---     JPEG 2000:                   build (ver 2.5.3)
---     OpenEXR:                     build (ver 2.3.0)
---     GIF:                         YES
---     HDR:                         YES
---     SUNRASTER:                   YES
---     PXM:                         YES
---     PFM:                         YES
---
---   Video I/O:
---     FFMPEG:                      YES (prebuilt binaries)
---       avcodec:                   YES (61.19.100)
---       avformat:                  YES (61.7.100)
---       avutil:                    YES (59.39.100)
---       swscale:                   YES (8.3.100)
---       avdevice:                  NO
---     GStreamer:                   NO
---     DirectShow:                  YES
---     Orbbec:                      NO
---
---   Parallel framework:            pthreads
---
---   Trace:                         YES (built-in)
---
---   Other third-party libraries:
---     Lapack:                      NO
---     Eigen:                       NO
---     Custom HAL:                  NO
---     Protobuf:                    build (3.19.1)
---     Flatbuffers:                 builtin/3rdparty (25.9.23)
---
---   OpenCL:                        YES (NVD3D11)
---     Include path:                C:/opencv-src/3rdparty/include/opencl/1.2
---     Link libraries:              Dynamic load
---
---   Python (for build):            C:/msys64/ucrt64/bin/python3.exe
---
---   Java:
---     ant:                         NO
---     Java:                        NO
---     JNI:                         NO
---     Java wrappers:               NO
---     Java tests:                  NO
---
---   Install to:                    C:/opencv-build/install
--- -----------------------------------------------------------------
---
-CMake Warning (policy) at cmake/OpenCVUtils.cmake:32 (get_property):
-  Policy CMP0218 is not set: The CMAKE_WARN_DEPRECATED and
-  CMAKE_ERROR_DEPRECATED variables are ignored.  Run "cmake --help-policy
-  CMP0218" for policy details.  Use the cmake_policy command to set the
-  policy and suppress this warning.
-Call Stack (most recent call first):
-  CMakeLists.txt:2083 (ocv_cmake_dump_vars)
-This warning is for project developers.  Use -Wno-author or -Wno-policy to
-suppress it.
-
-CMake Warning (policy) at cmake/OpenCVUtils.cmake:32 (get_property):
-  Policy CMP0218 is not set: The CMAKE_WARN_DEPRECATED and
-  CMAKE_ERROR_DEPRECATED variables are ignored.  Run "cmake --help-policy
-  CMP0218" for policy details.  Use the cmake_policy command to set the
-  policy and suppress this warning.
-Call Stack (most recent call first):
-  CMakeLists.txt:2083 (ocv_cmake_dump_vars)
-This warning is for project developers.  Use -Wno-author or -Wno-policy to
-suppress it.
-
--- Configuring done (124.7s)
--- Generating done (1.4s)
--- Build files have been written to: C:/opencv-build
+08/10/2026  03:03 PM    <DIR>          .
+08/10/2026  03:06 PM    <DIR>          ..
+08/10/2026  02:59 PM           411,912 libopencv_calib3d4150.dll.a
+08/10/2026  02:52 PM         1,935,766 libopencv_core4150.dll.a
+08/10/2026  03:00 PM           810,726 libopencv_dnn4150.dll.a
+08/10/2026  02:58 PM           464,768 libopencv_features2d4150.dll.a
+08/10/2026  02:53 PM           283,932 libopencv_flann4150.dll.a
+08/10/2026  03:03 PM         1,279,886 libopencv_gapi4150.dll.a
+08/10/2026  02:57 PM           343,900 libopencv_highgui4150.dll.a
+08/10/2026  02:56 PM           290,000 libopencv_imgcodecs4150.dll.a
+08/10/2026  02:55 PM           559,234 libopencv_imgproc4150.dll.a
+08/10/2026  02:53 PM           301,110 libopencv_ml4150.dll.a
+08/10/2026  03:01 PM           502,892 libopencv_objdetect4150.dll.a
+08/10/2026  02:55 PM           376,234 libopencv_photo4150.dll.a
+08/10/2026  03:00 PM           817,066 libopencv_stitching4150.dll.a
+08/10/2026  03:01 PM           455,660 libopencv_video4150.dll.a
+08/10/2026  02:56 PM           354,326 libopencv_videoio4150.dll.a
+              15 File(s)      9,187,412 bytes
+               2 Dir(s)  58,717,491,200 bytes free
