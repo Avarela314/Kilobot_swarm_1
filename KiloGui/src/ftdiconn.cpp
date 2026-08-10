@@ -77,7 +77,7 @@ void FTDIConnection::open() {
 void FTDIConnection::sendCommand(QByteArray cmd) {
     mode = MODE_NORMAL;
     if (ftdic != NULL) {
-        qDebug() << "Packet:";
+        //qDebug() << "Packet:";
         for (int i=0; i<cmd.length();i++){
             qDebug().nospace() << QString("%1 ").arg((unsigned char)cmd[i], 2, 16, QChar('0'));
         }
@@ -126,7 +126,7 @@ void FTDIConnection::programLoop() {
         } else {
             packet[0] = PACKET_HEADER;
             packet[1] = PACKET_BOOTPAGE;
-            qDebug() << "sending page" << page << "/" << page_total;
+            //qDebug() << "sending page" << page << "/" << page_total;
             packet[2] = page;
             uint8_t checksum = PACKET_HEADER^PACKET_BOOTPAGE^page;
             uint8_t data_byte;
