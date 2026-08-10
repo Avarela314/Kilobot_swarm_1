@@ -7,11 +7,13 @@
 
 #include <opencv2/opencv.hpp>
 
-class CameraWindow : public QWidget {
+class CameraWindow : public QWidget
+{
     Q_OBJECT
 
 public:
-    CameraWindow(QWidget *parent = nullptr);
+    explicit CameraWindow(QWidget *parent = nullptr);
+    ~CameraWindow();
 
 private slots:
     void updateFrame();
