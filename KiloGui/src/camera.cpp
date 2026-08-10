@@ -2,6 +2,7 @@
 
 #include <QVBoxLayout>
 #include <QImage>
+#include <QPixmap>
 
 CameraWindow::CameraWindow(QWidget *parent)
     : QWidget(parent)
@@ -12,25 +13,31 @@ CameraWindow::CameraWindow(QWidget *parent)
     imageLabel = new QLabel(this);
     imageLabel->setAlignment(Qt::AlignCenter);
 
-    QVBoxLayout *layout = new QVBoxLayout;
+    QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(imageLabel);
-    setLayout(layout);
 
     camera.open(0);
 
     timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(updateFrame()));
+
+    connect(timer, &QTimer::timeout,
+            this, &CameraWindow::updateFrame);
 
     timer->start(30);
 }
 
+CameraWindow::~CameraWindow()
+{
+    if (camera.isOpened())
+        camera.release();
+}
+
 void CameraWindow::updateFrame()
 {
-    cv::Mat frame;
-
     if (!camera.isOpened())
         return;
 
+    cv::Mat frame;
     camera >> frame;
 
     if (frame.empty())
@@ -42,7 +49,7 @@ void CameraWindow::updateFrame()
         frame.data,
         frame.cols,
         frame.rows,
-        frame.step,
+        static_cast<int>(frame.step),
         QImage::Format_RGB888
     );
 
