@@ -58,7 +58,7 @@ private slots:
     void chooseProgramFile();
     void uploadProgram();
     void stopSending();
-    void sendMessage(int);
+    void sendMessage(int type_int);
     void sendDataMessage(uint8_t *, uint8_t);
     void serialShow();
     void calibShow();
