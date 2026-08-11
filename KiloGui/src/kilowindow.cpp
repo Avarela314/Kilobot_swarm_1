@@ -14,6 +14,7 @@
 #include "kilowindow.h"
 #include "packet.h"
 #include <QMessageBox>
+#include "camera.h"
 
 typedef struct {
     const char *name;
@@ -57,6 +58,12 @@ KiloWindow::KiloWindow(QWidget *parent): QWidget(parent), device(0), sending(fal
     calib = new CalibWindow("Calibration Values", this);
     QObject::connect(calib_button, SIGNAL(clicked()), this, SLOT(calibShow()));
 
+    // create camera window and its button
+    camera = nullptr;
+    camera_button =  new QPushButton("Camera");
+    camera = new CameraWindow(this);
+    QObject::connect(camera_button, SIGNAL(clicked()), this, SLOT(cameraShow()));
+
     connect(calib, SIGNAL(calibUID(int)), this, SLOT(calibUID(int)));
     connect(calib, SIGNAL(calibLeft(int)), this, SLOT(calibLeft(int)));
     connect(calib, SIGNAL(calibRight(int)), this, SLOT(calibRight(int)));
@@ -70,6 +77,7 @@ KiloWindow::KiloWindow(QWidget *parent): QWidget(parent), device(0), sending(fal
     vbox->addWidget(createCommands());
     vbox->addWidget(serial_button);
     vbox->addWidget(calib_button);
+    vbox->addWidget(camera_button);
     vbox->addWidget(status);
 
     setLayout(vbox);
@@ -460,4 +468,12 @@ void KiloWindow::calibStraight(int x) {
     msg.straight_left = x&0xFF;
     msg.straight_right = (x>>8) & 0xFF;
     sendDataMessage((uint8_t *)&msg, CALIB);
+}
+//camera function
+void KiloWindow::cameraShow() {
+    qDebug() << "camera button pressed";
+
+    camera->show();
+    camera->raise();
+    camera->activateWindow();
 }
