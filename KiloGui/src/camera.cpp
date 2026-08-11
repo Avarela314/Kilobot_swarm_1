@@ -1,3 +1,4 @@
+```cpp
 #include "camera.h"
 
 #include <QVBoxLayout>
@@ -5,12 +6,12 @@
 #include <QPixmap>
 
 CameraWindow::CameraWindow(QWidget *parent)
-    : QWidget(parent)
+    : QWidget(nullptr)   // nullptr makes this a separate top-level window
 {
     setWindowTitle("Kilobot Camera");
     resize(640, 480);
 
-    imageLabel = new QLabel("Camera not started", this);
+    imageLabel = new QLabel("Opening camera...", this);
     imageLabel->setAlignment(Qt::AlignCenter);
 
     QVBoxLayout *layout = new QVBoxLayout(this);
@@ -20,16 +21,22 @@ CameraWindow::CameraWindow(QWidget *parent)
 
     connect(timer, &QTimer::timeout,
             this, &CameraWindow::updateFrame);
+
+    // Start updating the camera approximately 30 times per second
+    timer->start(33);
 }
 
 CameraWindow::~CameraWindow()
 {
+    timer->stop();
+
     if (camera.isOpened())
         camera.release();
 }
 
 void CameraWindow::updateFrame()
 {
+    // Open the camera once
     if (!camera.isOpened()) {
         camera.open(0);
 
@@ -65,3 +72,4 @@ void CameraWindow::updateFrame()
         )
     );
 }
+```
