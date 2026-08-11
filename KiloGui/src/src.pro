@@ -6,6 +6,13 @@ QT+= widgets
 INCLUDEPATH += C:/msys64/mingw64/include
 INCLUDEPATH += C:/msys64/mingw64/include/libusb-compat
 
+INCLUDEPATH += C:/opencv-build/install/include
+LIBS += -LC:/opencv-build/lib \
+        -lopencv_core4150 \
+        -lopencv_imgproc4150 \
+        -lopencv_videoio4150 \
+        -lopencv_highgui4150
+
 LIBS += -LC:/msys64/mingw64/lib
 LIBS += -lftdi1 -lusb
 
@@ -13,9 +20,9 @@ RESOURCES = kilogui.qrc
 RC_FILE = kilogui.rc
 mac:ICON = images/kilogui.icns
 
-HEADERS += kilowindow.h calibrate.h serialwin.h ftdiconn.h vusbconn.h serialconn.h
+HEADERS += kilowindow.h calibrate.h serialwin.h ftdiconn.h vusbconn.h serialconn.h camera.h
 
-SOURCES += kilowindow.cpp kilogui.cpp calibrate.cpp serialwin.cpp ftdiconn.cpp intelhex.cpp vusbconn.cpp serialconn.cpp
+SOURCES += kilowindow.cpp kilogui.cpp calibrate.cpp serialwin.cpp ftdiconn.cpp intelhex.cpp vusbconn.cpp serialconn.cpp camera.cpp
 
 mystaticconfig {
     QMAKE_LIBS_QT =
