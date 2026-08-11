@@ -9,12 +9,14 @@
 #include "ftdiconn.h"
 #include "serialconn.h"
 #include "calibrate.h"
+#include "camera.h"
 
 class QGroupBox;
 class QToolButton;
 class QStatusBar;
 class QPushButton;
 class QComboBox;
+class CameraWindow;
 
 class KiloWindow: public QWidget {
     Q_OBJECT
@@ -27,6 +29,7 @@ private:
     VUSBConnection *vusb_conn;
     FTDIConnection *ftdi_conn;
     SerialConnection *serial_conn;
+    
     QString vusb_status;
     QString ftdi_status;
     QString serial_status;
@@ -42,6 +45,8 @@ private:
     bool sending;
     bool connected;
     QPushButton *upload_button, *serial_button, *calib_button;
+    CameraWindow *camera;
+    QPushButton *camera_button;
     QComboBox *combo;
     QList<QPushButton*> toggle_buttons;
     void updateStatus();
@@ -63,6 +68,8 @@ private slots:
     void serialShow();
     void calibShow();
     void setPort(int);
+
+    void cameraShow();
 
     void calibUID(int);
     void calibLeft(int);
