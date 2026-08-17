@@ -1,19 +1,7 @@
-08/10/2026  03:03 PM    <DIR>          .
-08/10/2026  03:06 PM    <DIR>          ..
-08/10/2026  02:59 PM           411,912 libopencv_calib3d4150.dll.a
-08/10/2026  02:52 PM         1,935,766 libopencv_core4150.dll.a
-08/10/2026  03:00 PM           810,726 libopencv_dnn4150.dll.a
-08/10/2026  02:58 PM           464,768 libopencv_features2d4150.dll.a
-08/10/2026  02:53 PM           283,932 libopencv_flann4150.dll.a
-08/10/2026  03:03 PM         1,279,886 libopencv_gapi4150.dll.a
-08/10/2026  02:57 PM           343,900 libopencv_highgui4150.dll.a
-08/10/2026  02:56 PM           290,000 libopencv_imgcodecs4150.dll.a
-08/10/2026  02:55 PM           559,234 libopencv_imgproc4150.dll.a
-08/10/2026  02:53 PM           301,110 libopencv_ml4150.dll.a
-08/10/2026  03:01 PM           502,892 libopencv_objdetect4150.dll.a
-08/10/2026  02:55 PM           376,234 libopencv_photo4150.dll.a
-08/10/2026  03:00 PM           817,066 libopencv_stitching4150.dll.a
-08/10/2026  03:01 PM           455,660 libopencv_video4150.dll.a
-08/10/2026  02:56 PM           354,326 libopencv_videoio4150.dll.a
-              15 File(s)      9,187,412 bytes
-               2 Dir(s)  58,717,491,200 bytes free
+cmake -G "MinGW Makefiles" ^
+-DCMAKE_C_COMPILER=C:/Qt/Tools/mingw1310_64/bin/gcc.exe ^
+-DCMAKE_CXX_COMPILER=C:/Qt/Tools/mingw1310_64/bin/g++.exe ^
+-DCMAKE_INSTALL_PREFIX=C:/opencv-aruco-build/install ^
+-DOPENCV_EXTRA_MODULES_PATH=C:/opencv_contrib-src/modules ^
+-DWITH_QT=OFF ^
+C:/opencv-src
