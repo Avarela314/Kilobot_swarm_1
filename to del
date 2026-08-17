@@ -1,7 +1,97 @@
-cmake -G "MinGW Makefiles" ^
--DCMAKE_C_COMPILER=C:/Qt/Tools/mingw1310_64/bin/gcc.exe ^
--DCMAKE_CXX_COMPILER=C:/Qt/Tools/mingw1310_64/bin/g++.exe ^
--DCMAKE_INSTALL_PREFIX=C:/opencv-aruco-build/install ^
--DOPENCV_EXTRA_MODULES_PATH=C:/opencv_contrib-src/modules ^
--DWITH_QT=OFF ^
-C:/opencv-src
+--
+--   OpenCV modules:
+--     To be built:                 aruco bgsegm bioinspired calib3d ccalib core datasets dnn dnn_objdetect dnn_superres dpm face features2d flann fuzzy gapi hfs highgui img_hash imgcodecs imgproc intensity_transform line_descriptor mcc ml objdetect optflow phase_unwrapping photo plot quality rapid reg rgbd saliency shape signal stereo stitching structured_light superres surface_matching text tracking ts video videoio videostab wechat_qrcode xfeatures2d ximgproc xobjdetect xphoto
+--     Disabled:                    world
+--     Disabled by dependency:      -
+--     Unavailable:                 alphamat cannops cudaarithm cudabgsegm cudacodec cudafeatures2d cudafilters cudaimgproc cudalegacy cudaobjdetect cudaoptflow cudastereo cudawarping cudev cvv fastcv freetype hdf java julia matlab ovis python2 python3 sfm viz
+--     Applications:                tests perf_tests apps
+--     Documentation:               NO
+--     Non-free algorithms:         NO
+--
+--   Windows RT support:            NO
+--
+--   GUI:                           WIN32UI
+--     Win32 UI:                    YES
+--     VTK support:                 NO
+--
+--   Media I/O:
+--     ZLib:                        build (ver 1.3.2)
+--     JPEG:                        build-libjpeg-turbo (ver 3.1.2-70)
+--       SIMD Support Request:      YES
+--       SIMD Support:              NO
+--     WEBP:                        build (ver decoder: 0x0210, encoder: 0x0210, demux: 0x0107)
+--     AVIF:                        NO
+--     PNG:                         build (ver 1.6.57)
+--       SIMD Support Request:      YES
+--       SIMD Support:              YES (Intel SSE)
+--       Metadata Support:          EXIF XMP ICC cICP
+--     TIFF:                        build (ver 42 - 4.7.1)
+--     JPEG 2000:                   build (ver 2.5.3)
+--     OpenEXR:                     build (ver 2.3.0)
+--     GIF:                         YES
+--     HDR:                         YES
+--     SUNRASTER:                   YES
+--     PXM:                         YES
+--     PFM:                         YES
+--
+--   Video I/O:
+--     FFMPEG:                      YES (prebuilt binaries)
+--       avcodec:                   YES (61.19.100)
+--       avformat:                  YES (61.7.100)
+--       avutil:                    YES (59.39.100)
+--       swscale:                   YES (8.3.100)
+--       avdevice:                  NO
+--     GStreamer:                   NO
+--     DirectShow:                  YES
+--     Orbbec:                      NO
+--
+--   Parallel framework:            pthreads
+--
+--   Trace:                         YES (built-in)
+--
+--   Other third-party libraries:
+--     Lapack:                      NO
+--     Eigen:                       NO
+--     Custom HAL:                  NO
+--     Protobuf:                    build (3.19.1)
+--     Flatbuffers:                 builtin/3rdparty (25.9.23)
+--
+--   OpenCL:                        YES (NVD3D11)
+--     Include path:                C:/opencv-src/3rdparty/include/opencl/1.2
+--     Link libraries:              Dynamic load
+--
+--   Python (for build):            C:/msys64/ucrt64/bin/python3.exe
+--
+--   Java:
+--     ant:                         NO
+--     Java:                        NO
+--     JNI:                         NO
+--     Java wrappers:               NO
+--     Java tests:                  NO
+--
+--   Install to:                    C:/opencv-aruco-build/install
+-- -----------------------------------------------------------------
+--
+CMake Warning (policy) at cmake/OpenCVUtils.cmake:32 (get_property):
+  Policy CMP0218 is not set: The CMAKE_WARN_DEPRECATED and
+  CMAKE_ERROR_DEPRECATED variables are ignored.  Run "cmake --help-policy
+  CMP0218" for policy details.  Use the cmake_policy command to set the
+  policy and suppress this warning.
+Call Stack (most recent call first):
+  CMakeLists.txt:2083 (ocv_cmake_dump_vars)
+This warning is for project developers.  Use -Wno-author or -Wno-policy to
+suppress it.
+
+CMake Warning (policy) at cmake/OpenCVUtils.cmake:32 (get_property):
+  Policy CMP0218 is not set: The CMAKE_WARN_DEPRECATED and
+  CMAKE_ERROR_DEPRECATED variables are ignored.  Run "cmake --help-policy
+  CMP0218" for policy details.  Use the cmake_policy command to set the
+  policy and suppress this warning.
+Call Stack (most recent call first):
+  CMakeLists.txt:2083 (ocv_cmake_dump_vars)
+This warning is for project developers.  Use -Wno-author or -Wno-policy to
+suppress it.
+
+-- Configuring done (128.2s)
+-- Generating done (4.1s)
+-- Build files have been written to: C:/opencv-aruco-build
