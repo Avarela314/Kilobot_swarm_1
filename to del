@@ -1,97 +1,34 @@
---
---   OpenCV modules:
---     To be built:                 aruco bgsegm bioinspired calib3d ccalib core datasets dnn dnn_objdetect dnn_superres dpm face features2d flann fuzzy gapi hfs highgui img_hash imgcodecs imgproc intensity_transform line_descriptor mcc ml objdetect optflow phase_unwrapping photo plot quality rapid reg rgbd saliency shape signal stereo stitching structured_light superres surface_matching text tracking ts video videoio videostab wechat_qrcode xfeatures2d ximgproc xobjdetect xphoto
---     Disabled:                    world
---     Disabled by dependency:      -
---     Unavailable:                 alphamat cannops cudaarithm cudabgsegm cudacodec cudafeatures2d cudafilters cudaimgproc cudalegacy cudaobjdetect cudaoptflow cudastereo cudawarping cudev cvv fastcv freetype hdf java julia matlab ovis python2 python3 sfm viz
---     Applications:                tests perf_tests apps
---     Documentation:               NO
---     Non-free algorithms:         NO
---
---   Windows RT support:            NO
---
---   GUI:                           WIN32UI
---     Win32 UI:                    YES
---     VTK support:                 NO
---
---   Media I/O:
---     ZLib:                        build (ver 1.3.2)
---     JPEG:                        build-libjpeg-turbo (ver 3.1.2-70)
---       SIMD Support Request:      YES
---       SIMD Support:              NO
---     WEBP:                        build (ver decoder: 0x0210, encoder: 0x0210, demux: 0x0107)
---     AVIF:                        NO
---     PNG:                         build (ver 1.6.57)
---       SIMD Support Request:      YES
---       SIMD Support:              YES (Intel SSE)
---       Metadata Support:          EXIF XMP ICC cICP
---     TIFF:                        build (ver 42 - 4.7.1)
---     JPEG 2000:                   build (ver 2.5.3)
---     OpenEXR:                     build (ver 2.3.0)
---     GIF:                         YES
---     HDR:                         YES
---     SUNRASTER:                   YES
---     PXM:                         YES
---     PFM:                         YES
---
---   Video I/O:
---     FFMPEG:                      YES (prebuilt binaries)
---       avcodec:                   YES (61.19.100)
---       avformat:                  YES (61.7.100)
---       avutil:                    YES (59.39.100)
---       swscale:                   YES (8.3.100)
---       avdevice:                  NO
---     GStreamer:                   NO
---     DirectShow:                  YES
---     Orbbec:                      NO
---
---   Parallel framework:            pthreads
---
---   Trace:                         YES (built-in)
---
---   Other third-party libraries:
---     Lapack:                      NO
---     Eigen:                       NO
---     Custom HAL:                  NO
---     Protobuf:                    build (3.19.1)
---     Flatbuffers:                 builtin/3rdparty (25.9.23)
---
---   OpenCL:                        YES (NVD3D11)
---     Include path:                C:/opencv-src/3rdparty/include/opencl/1.2
---     Link libraries:              Dynamic load
---
---   Python (for build):            C:/msys64/ucrt64/bin/python3.exe
---
---   Java:
---     ant:                         NO
---     Java:                        NO
---     JNI:                         NO
---     Java wrappers:               NO
---     Java tests:                  NO
---
---   Install to:                    C:/opencv-aruco-build/install
--- -----------------------------------------------------------------
---
-CMake Warning (policy) at cmake/OpenCVUtils.cmake:32 (get_property):
-  Policy CMP0218 is not set: The CMAKE_WARN_DEPRECATED and
-  CMAKE_ERROR_DEPRECATED variables are ignored.  Run "cmake --help-policy
-  CMP0218" for policy details.  Use the cmake_policy command to set the
-  policy and suppress this warning.
-Call Stack (most recent call first):
-  CMakeLists.txt:2083 (ocv_cmake_dump_vars)
-This warning is for project developers.  Use -Wno-author or -Wno-policy to
-suppress it.
-
-CMake Warning (policy) at cmake/OpenCVUtils.cmake:32 (get_property):
-  Policy CMP0218 is not set: The CMAKE_WARN_DEPRECATED and
-  CMAKE_ERROR_DEPRECATED variables are ignored.  Run "cmake --help-policy
-  CMP0218" for policy details.  Use the cmake_policy command to set the
-  policy and suppress this warning.
-Call Stack (most recent call first):
-  CMakeLists.txt:2083 (ocv_cmake_dump_vars)
-This warning is for project developers.  Use -Wno-author or -Wno-policy to
-suppress it.
-
--- Configuring done (128.2s)
--- Generating done (4.1s)
--- Build files have been written to: C:/opencv-aruco-build
+mingw32-make.exe[2]: *** [modules\imgproc\CMakeFiles\opencv_perf_imgproc.dir\build.make:559: modules/imgproc/CMakeFiles/opencv_perf_imgproc.dir/perf/perf_moments.cpp.obj] Error 1
+mingw32-make.exe[2]: *** [modules\imgproc\CMakeFiles\opencv_perf_imgproc.dir\build.make:439: modules/imgproc/CMakeFiles/opencv_perf_imgproc.dir/perf/perf_histogram.cpp.obj] Error 1
+mingw32-make.exe[2]: *** [modules\imgproc\CMakeFiles\opencv_perf_imgproc.dir\build.make:454: modules/imgproc/CMakeFiles/opencv_perf_imgproc.dir/perf/perf_houghcircles.cpp.obj] Error 1
+mingw32-make.exe[2]: *** [modules\imgproc\CMakeFiles\opencv_perf_imgproc.dir\build.make:469: modules/imgproc/CMakeFiles/opencv_perf_imgproc.dir/perf/perf_houghlines.cpp.obj] Error 1
+mingw32-make.exe[2]: *** [modules\imgproc\CMakeFiles\opencv_perf_imgproc.dir\build.make:514: modules/imgproc/CMakeFiles/opencv_perf_imgproc.dir/perf/perf_laplacian.cpp.obj] Error 1
+mingw32-make.exe[2]: *** [modules\imgproc\CMakeFiles\opencv_test_imgproc.dir\build.make:619: modules/imgproc/CMakeFiles/opencv_test_imgproc.dir/test/test_goodfeaturetotrack.cpp.obj] Error 1
+mingw32-make.exe[2]: *** [modules\core\CMakeFiles\opencv_perf_core.dir\build.make:454: modules/core/CMakeFiles/opencv_perf_core.dir/perf/perf_math.cpp.obj] Error 1
+mingw32-make.exe[1]: *** [CMakeFiles\Makefile2:6059: modules/xphoto/CMakeFiles/opencv_test_xphoto.dir/all] Error 2
+mingw32-make.exe[2]: *** [modules\core\CMakeFiles\opencv_perf_core.dir\build.make:379: modules/core/CMakeFiles/opencv_perf_core.dir/perf/perf_inRange.cpp.obj] Error 1
+mingw32-make.exe[2]: *** [modules\core\CMakeFiles\opencv_perf_core.dir\build.make:469: modules/core/CMakeFiles/opencv_perf_core.dir/perf/perf_merge.cpp.obj] Error 1
+mingw32-make.exe[2]: *** [modules\core\CMakeFiles\opencv_perf_core.dir\build.make:484: modules/core/CMakeFiles/opencv_perf_core.dir/perf/perf_minmaxloc.cpp.obj] Error 1
+mingw32-make.exe[2]: *** [modules\core\CMakeFiles\opencv_perf_core.dir\build.make:499: modules/core/r 1
+mingw32-make.exe[2]: *** [modules\core\CMakeFiles\opencv_perf_core.dir\build.make:514: modules/core/CMakeFiles/opencv_perf_core.dir/perf/perf_reduce.cpp.obj] Error 1
+mingw32-make.exe[2]: *** [modules\core\CMakeFiles\opencv_perf_core.dir\build.make:544: modules/core/CMakeFiles/opencv_perf_core.dir/perf/perf_split.cpp.obj] Error 1
+[ 55%] Linking CXX executable ..\..\bin\opencv_test_intensity_transform.exe
+mingw32-make.exe[2]: *** [modules\core\CMakeFiles\opencv_perf_core.dir\build.make:559: modules/core/CMakeFiles/opencv_perf_core.dir/perf/perf_stat.cpp.obj] Error 1
+mingw32-make.exe[1]: *** [CMakeFiles\Makefile2:5423: modules/ml/CMakeFiles/opencv_perf_ml.dir/all] Error 2
+mingw32-make.exe[2]: *** [modules\core\CMakeFiles\opencv_perf_core.dir\build.make:574: modules/core/CMakeFiles/opencv_perf_core.dir/perf/perf_umat.cpp.obj] Error 1
+mingw32-make.exe[2]: *** [modules\core\CMakeFiles\opencv_perf_core.dir\build.make:529: modules/core/CMakeFiles/opencv_perf_core.dir/perf/perf_sort.cpp.obj] Error 1
+mingw32-make.exe[1]: *** [CMakeFiles\Makefile2:5571: modules/photo/CMakeFiles/opencv_test_photo.dir/all] Error 2
+mingw32-make.exe[1]: *** [CMakeFiles\Makefile2:5612: modules/photo/CMakeFiles/opencv_perf_photo.dir/all] Error 2
+mingw32-make.exe[1]: *** [CMakeFiles\Makefile2:7155: modules/videoio/CMakeFiles/opencv_perf_videoio.dir/all] Error 2
+[ 55%] Linking CXX executable ..\..\bin\opencv_perf_bioinspired.exe
+[ 55%] Built target opencv_test_intensity_transform
+mingw32-make.exe[1]: *** [CMakeFiles\Makefile2:5050: modules/core/CMakeFiles/opencv_perf_core.dir/all] Error 2
+[ 55%] Built target opencv_perf_bioinspired
+mingw32-make.exe[1]: *** [CMakeFiles\Makefile2:7115: modules/videoio/CMakeFiles/opencv_test_videoio.dir/all] Error 2
+mingw32-make.exe[1]: *** [CMakeFiles\Makefile2:6720: modules/imgcodecs/CMakeFiles/opencv_test_imgcodecs.dir/all] Error 2
+mingw32-make.exe[1]: *** [CMakeFiles\Makefile2:5235: modules/imgproc/CMakeFiles/opencv_perf_imgproc.dir/all] Error 2
+[ 55%] Linking CXX shared library ..\..\bin\libopencv_features2d4150.dll
+[ 55%] Built target opencv_features2d
+mingw32-make.exe[1]: *** [CMakeFiles\Makefile2:5195: modules/imgproc/CMakeFiles/opencv_test_imgproc.dir/all] Error 2
+mingw32-make.exe[1]: *** [CMakeFiles\Makefile2:5010: modules/core/CMakeFiles/opencv_test_core.dir/all] Error 2
+mingw32-make.exe: *** [Makefile:165: all] Error 2
