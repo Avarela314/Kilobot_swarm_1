@@ -1,1 +1,8 @@
-cmake -G "MinGW Makefiles" -DCMAKE_C_COMPILER=C:/Qt/Tools/mingw1310_64/bin/gcc.exe -DCMAKE_CXX_COMPILER=C:/Qt/Tools/mingw1310_64/bin/g++.exe -DCMAKE_INSTALL_PREFIX=C:/opencv-aruco-build/install -DOPENCV_EXTRA_MODULES_PATH=C:/opencv_contrib-src/modules -DBUILD_TESTS=OFF -DBUILD_PERF_TESTS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_opencv_apps=OFF -DWITH_QT=OFF C:/opencv-src
+INCLUDEPATH += C:/opencv-aruco-build/include
+
+LIBS += -LC:/opencv-aruco-build/lib \
+        -lopencv_core4150 \
+        -lopencv_imgproc4150 \
+        -lopencv_videoio4150 \
+        -lopencv_highgui4150 \
+        -lopencv_aruco4150
