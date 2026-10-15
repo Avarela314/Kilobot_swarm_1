@@ -1,8 +1,30 @@
-INCLUDEPATH += C:/opencv-aruco-build/include
-
-LIBS += -LC:/opencv-aruco-build/lib \
-        -lopencv_core4150 \
-        -lopencv_imgproc4150 \
-        -lopencv_videoio4150 \
-        -lopencv_highgui4150 \
-        -lopencv_aruco4150
+cd src/ && ( test -e Makefile || /usr/lib/qt5/bin/qmake -o Makefile /home/srolab/kilogui/src/src.pro ) && make -f Makefile 
+make[1]: Entering directory '/home/srolab/kilogui/src'
+g++ -c -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC -DDATADIR=\"/usr/share\" -DPKGDATADIR=\"\" -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -I. -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o kilowindow.o kilowindow.cpp
+g++ -c -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC -DDATADIR=\"/usr/share\" -DPKGDATADIR=\"\" -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -I. -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o kilogui.o kilogui.cpp
+g++ -c -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC -DDATADIR=\"/usr/share\" -DPKGDATADIR=\"\" -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -I. -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o calibrate.o calibrate.cpp
+g++ -c -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC -DDATADIR=\"/usr/share\" -DPKGDATADIR=\"\" -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -I. -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o serialwin.o serialwin.cpp
+kilogui.cpp:1:10: fatal error: QApplication: No such file or directory
+    1 | #include <QApplication>
+      |          ^~~~~~~~~~~~~~
+compilation terminated.
+make[1]: *** [Makefile:468: kilogui.o] Error 1
+make[1]: *** Waiting for unfinished jobs....
+kilowindow.cpp:2:10: fatal error: QFileDialog: No such file or directory
+    2 | #include <QFileDialog>
+      |          ^~~~~~~~~~~~~
+compilation terminated.
+serialwin.cpp:2:10: fatal error: QTextEdit: No such file or directory
+    2 | #include <QTextEdit>
+      |          ^~~~~~~~~~~
+compilation terminated.
+In file included from calibrate.cpp:2:
+calibrate.h:4:10: fatal error: QWidget: No such file or directory
+    4 | #include <QWidget>
+      |          ^~~~~~~~~
+compilation terminated.
+make[1]: *** [Makefile:471: calibrate.o] Error 1
+make[1]: *** [Makefile:459: kilowindow.o] Error 1
+make[1]: *** [Makefile:474: serialwin.o] Error 1
+make[1]: Leaving directory '/home/srolab/kilogui/src'
+make: *** [Makefile:47: sub-src-make_first] Error 2
