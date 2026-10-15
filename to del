@@ -1,4 +1,50 @@
-BUS=$(lsusb -d 0403:6001 | head -n 1 | awk '{print $2}')
-DEV=$(lsusb -d 0403:6001 | head -n 1 | awk '{print $4}' | tr -d :)
-echo "USB device path: /dev/bus/usb/$BUS/$DEV"
-ls -l "/dev/bus/usb/$BUS/$DEV"
+
+Udevadm info starts with the device specified by the devpath and then
+walks up the chain of parent devices. It prints for every device
+found, all possible attributes in the udev rules key format.
+A rule to match, can be composed by the attributes of the device
+and the attributes from one single parent device.
+
+  looking at device '/devices/pci0000:00/0000:00:14.0/usb1/1-9/1-9.2/1-9.2:1.0/ttyUSB0/tty/ttyUSB0':
+    KERNEL=="ttyUSB0"
+    SUBSYSTEM=="tty"
+    DRIVER==""
+    ATTR{power/async}=="disabled"
+    ATTR{power/control}=="auto"
+    ATTR{power/runtime_active_kids}=="0"
+    ATTR{power/runtime_active_time}=="0"
+    ATTR{power/runtime_enabled}=="disabled"
+    ATTR{power/runtime_status}=="unsupported"
+    ATTR{power/runtime_suspended_time}=="0"
+    ATTR{power/runtime_usage}=="0"
+
+  looking at parent device '/devices/pci0000:00/0000:00:14.0/usb1/1-9/1-9.2/1-9.2:1.0/ttyUSB0':
+    KERNELS=="ttyUSB0"
+    SUBSYSTEMS=="usb-serial"
+    DRIVERS=="ftdi_sio"
+    ATTRS{event_char}=="(not readable)"
+    ATTRS{latency_timer}=="16"
+    ATTRS{port_number}=="0"
+    ATTRS{power/async}=="enabled"
+    ATTRS{power/control}=="auto"
+    ATTRS{power/runtime_active_kids}=="0"
+    ATTRS{power/runtime_active_time}=="0"
+    ATTRS{power/runtime_enabled}=="disabled"
+    ATTRS{power/runtime_status}=="unsupported"
+    ATTRS{power/runtime_suspended_time}=="0"
+    ATTRS{power/runtime_usage}=="0"
+
+  looking at parent device '/devices/pci0000:00/0000:00:14.0/usb1/1-9/1-9.2/1-9.2:1.0':
+    KERNELS=="1-9.2:1.0"
+    SUBSYSTEMS=="usb"
+    DRIVERS=="ftdi_sio"
+~/kilogui/src$ udevadm info -q path -n /dev/ttyUSB0
+/devices/pci0000:00/0000:00:14.0/usb1/1-9/1-9.2/1-9.2:1.0/ttyUSB0/tty/ttyUSB0
+~/kilogui/src$ sudo udevadm test "$(udevadm info -q path -n /devttyUSb0)" 2>&1 | grep -E '99-kilobot|0403|6001|MODE|GROUP'
+Unknown device "/dev//devttyUSb0": No such device
+Reading rules file: /etc/udev/rules.d/99-kilobot.rules
+/etc/udev/rules.d/99-kilobot.rules:1 Invalid key/value pair, ignoring.
+~/kilogui/src$ sudo udevadm test "$(udevadm info -q path -n /devttyUSB0)" 2>&1 | grep -E '99-kilobot|0403|6001|MODE|GROUP'
+Unknown device "/dev//devttyUSB0": No such device
+Reading rules file: /etc/udev/rules.d/99-kilobot.rules
+/etc/udev/rules.d/99-kilobot.rules:1 Invalid key/value pair, ignoring.
