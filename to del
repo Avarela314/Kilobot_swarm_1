@@ -1,46 +1,198 @@
-TEMPLATE = app
-TARGET = kilogui
-LIBS += -lftdi -lusb
-
-RESOURCES = kilogui.qrc
-RC_FILE = kilogui.rc
-mac:ICON = images/kilogui.icns
-
-HEADERS += kilowindow.h calibrate.h serialwin.h ftdiconn.h vusbconn.h serialconn.h
-
-SOURCES += kilowindow.cpp kilogui.cpp calibrate.cpp serialwin.cpp ftdiconn.cpp intelhex.cpp vusbconn.cpp serialconn.cpp
-
-mystaticconfig {
-    QMAKE_LIBS_QT =
-    QMAKE_LIBS_QT_THREAD =
-    LIBS += $(QTDIR)/lib/libqt.a -lz -framework Carbon
-}
-
-unix {
-  #VARIABLES
-  isEmpty(PREFIX) {
-    PREFIX = /usr
-  }
-  BINDIR = $$PREFIX/bin
-  DATADIR =$$PREFIX/share
-
-  DEFINES += DATADIR=\\\"$$DATADIR\\\" PKGDATADIR=\\\"$$PKGDATADIR\\\"
-
-  #MAKE INSTALL
-
-  INSTALLS += target desktop icon48 icon64 icon128
-
-  target.path =$$BINDIR
-
-  desktop.path = $$DATADIR/applications
-  desktop.files += $${TARGET}.desktop
-
-  icon48.path = $$DATADIR/icons/hicolor/48x48/apps
-  icon48.files += images/48x48/kilogui.png
-
-  icon64.path = $$DATADIR/icons/hicolor/64x64/apps
-  icon64.files += images/64x64/kilogui.png
-
-  icon128.path = $$DATADIR/icons/hicolor/128x128/apps
-  icon128.files += images/128x128/kilogui.png
-}
+cd src/ && ( test -e Makefile || /usr/lib/qt5/bin/qmake -o Makefile /home/srolab/kilogui/src/src.pro ) && make -f Makefile clean
+make[1]: Entering directory '/home/srolab/kilogui/src'
+/usr/lib/qt5/bin/qmake -o Makefile src.pro
+rm -f qrc_kilogui.cpp
+rm -f moc_predefs.h
+rm -f moc_kilowindow.cpp moc_calibrate.cpp moc_serialwin.cpp moc_ftdiconn.cpp moc_vusbconn.cpp moc_serialconn.cpp
+rm -f kilowindow.o kilogui.o calibrate.o serialwin.o ftdiconn.o intelhex.o vusbconn.o serialconn.o qrc_kilogui.o moc_kilowindow.o moc_calibrate.o moc_serialwin.o moc_ftdiconn.o moc_vusbconn.o moc_serialconn.o
+rm -f *~ core *.core
+make[1]: Leaving directory '/home/srolab/kilogui/src'
+srolab@srolab-Z170X-UD3:~/kilogui$ make -j$(nproc)
+cd src/ && ( test -e Makefile || /usr/lib/qt5/bin/qmake -o Makefile /home/srolab/kilogui/src/src.pro ) && make -f Makefile 
+make[1]: Entering directory '/home/srolab/kilogui/src'
+g++ -c -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC -DDATADIR=\"/usr/share\" -DPKGDATADIR=\"\" -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -I. -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o kilowindow.o kilowindow.cpp
+g++ -c -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC -DDATADIR=\"/usr/share\" -DPKGDATADIR=\"\" -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -I. -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o kilogui.o kilogui.cpp
+g++ -c -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC -DDATADIR=\"/usr/share\" -DPKGDATADIR=\"\" -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -I. -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o calibrate.o calibrate.cpp
+g++ -c -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC -DDATADIR=\"/usr/share\" -DPKGDATADIR=\"\" -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -I. -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o serialwin.o serialwin.cpp
+In file included from kilowindow.h:8,
+                 from kilogui.cpp:2:
+vusbconn.h:4:10: fatal error: usb.h: No such file or directory
+    4 | #include <usb.h>
+      |          ^~~~~~~
+compilation terminated.
+make[1]: *** [Makefile:473: kilogui.o] Error 1
+make[1]: *** Waiting for unfinished jobs....
+kilowindow.cpp:6:10: fatal error: ftdi.h: No such file or directory
+    6 | #include <ftdi.h>
+      |          ^~~~~~~~
+compilation terminated.
+make[1]: *** [Makefile:464: kilowindow.o] Error 1
+serialwin.cpp: In constructor ‘SerialWindow::SerialWindow(QString, QWidget*)’:
+serialwin.cpp:10:5: error: ‘QPushButton’ was not declared in this scope
+   10 |     QPushButton *close_button = new QPushButton("C&lose");
+      |     ^~~~~~~~~~~
+serialwin.cpp:10:18: error: ‘close_button’ was not declared in this scope
+   10 |     QPushButton *close_button = new QPushButton("C&lose");
+      |                  ^~~~~~~~~~~~
+serialwin.cpp:10:37: error: expected type-specifier before ‘QPushButton’
+   10 |     QPushButton *close_button = new QPushButton("C&lose");
+      |                                     ^~~~~~~~~~~
+calibrate.cpp: In constructor ‘CalibWindow::CalibWindow(QString, QWidget*)’:
+calibrate.cpp:5:5: error: ‘QPushButton’ was not declared in this scope
+    5 |     QPushButton *save_button = new QPushButton("&Save");
+      |     ^~~~~~~~~~~
+serialwin.cpp:11:18: error: ‘clear_button’ was not declared in this scope
+   11 |     QPushButton *clear_button = new QPushButton("&Clear");
+      |                  ^~~~~~~~~~~~
+serialwin.cpp:11:37: error: expected type-specifier before ‘QPushButton’
+   11 |     QPushButton *clear_button = new QPushButton("&Clear");
+      |                                     ^~~~~~~~~~~
+calibrate.cpp:5:18: error: ‘save_button’ was not declared in this scope
+    5 |     QPushButton *save_button = new QPushButton("&Save");
+      |                  ^~~~~~~~~~~
+calibrate.cpp:5:36: error: expected type-specifier before ‘QPushButton’
+    5 |     QPushButton *save_button = new QPushButton("&Save");
+      |                                    ^~~~~~~~~~~
+serialwin.cpp:15:5: error: ‘QVBoxLayout’ was not declared in this scope
+   15 |     QVBoxLayout *layout = new QVBoxLayout();
+      |     ^~~~~~~~~~~
+serialwin.cpp:15:31: error: expected type-specifier before ‘QVBoxLayout’
+   15 |     QVBoxLayout *layout = new QVBoxLayout();
+      |                               ^~~~~~~~~~~
+serialwin.cpp:16:5: error: ‘QHBoxLayout’ was not declared in this scope
+   16 |     QHBoxLayout *hbox = new QHBoxLayout();
+      |     ^~~~~~~~~~~
+calibrate.cpp:6:18: error: ‘close_button’ was not declared in this scope
+    6 |     QPushButton *close_button = new QPushButton("&Close");
+      |                  ^~~~~~~~~~~~
+calibrate.cpp:6:37: error: expected type-specifier before ‘QPushButton’
+    6 |     QPushButton *close_button = new QPushButton("&Close");
+      |                                     ^~~~~~~~~~~
+serialwin.cpp:16:18: error: ‘hbox’ was not declared in this scope
+   16 |     QHBoxLayout *hbox = new QHBoxLayout();
+      |                  ^~~~
+serialwin.cpp:16:29: error: expected type-specifier before ‘QHBoxLayout’
+   16 |     QHBoxLayout *hbox = new QHBoxLayout();
+      |                             ^~~~~~~~~~~
+serialwin.cpp:17:5: error: invalid use of member function ‘QLayout* QWidget::layout() const’ (did you forget the ‘()’ ?)
+   17 |     layout->addWidget(text_edit);
+      |     ^~~~~~
+      |           ()
+serialwin.cpp:20:5: error: invalid use of member function ‘QLayout* QWidget::layout() const’ (did you forget the ‘()’ ?)
+   20 |     layout->addLayout(hbox);
+      |     ^~~~~~
+      |           ()
+serialwin.cpp:21:15: error: invalid use of non-static member function ‘QLayout* QWidget::layout() const’
+   21 |     setLayout(layout);
+      |               ^~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qframe.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qabstractscrollarea.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtextedit.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QTextEdit:1,
+                 from serialwin.cpp:2:
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:537:14: note: declared here
+  537 |     QLayout *layout() const;
+      |              ^~~~~~
+calibrate.cpp:10:5: error: ‘QVBoxLayout’ was not declared in this scope
+   10 |     QVBoxLayout *layout = new QVBoxLayout();
+      |     ^~~~~~~~~~~
+calibrate.cpp:10:31: error: expected type-specifier before ‘QVBoxLayout’
+   10 |     QVBoxLayout *layout = new QVBoxLayout();
+      |                               ^~~~~~~~~~~
+calibrate.cpp:11:5: error: ‘QHBoxLayout’ was not declared in this scope
+   11 |     QHBoxLayout *hbox = new QHBoxLayout();
+      |     ^~~~~~~~~~~
+calibrate.cpp:11:18: error: ‘hbox’ was not declared in this scope
+   11 |     QHBoxLayout *hbox = new QHBoxLayout();
+      |                  ^~~~
+calibrate.cpp:11:29: error: expected type-specifier before ‘QHBoxLayout’
+   11 |     QHBoxLayout *hbox = new QHBoxLayout();
+      |                             ^~~~~~~~~~~
+calibrate.cpp:12:5: error: ‘QGridLayout’ was not declared in this scope
+   12 |     QGridLayout *grid = new QGridLayout();
+      |     ^~~~~~~~~~~
+calibrate.cpp:12:18: error: ‘grid’ was not declared in this scope
+   12 |     QGridLayout *grid = new QGridLayout();
+      |                  ^~~~
+calibrate.cpp:12:29: error: expected type-specifier before ‘QGridLayout’
+   12 |     QGridLayout *grid = new QGridLayout();
+      |                             ^~~~~~~~~~~
+calibrate.cpp:15:5: error: invalid use of member function ‘QLayout* QWidget::layout() const’ (did you forget the ‘()’ ?)
+   15 |     layout->addLayout(grid);
+      |     ^~~~~~
+      |           ()
+calibrate.cpp:16:5: error: invalid use of member function ‘QLayout* QWidget::layout() const’ (did you forget the ‘()’ ?)
+   16 |     layout->addLayout(hbox);
+      |     ^~~~~~
+      |           ()
+calibrate.cpp:17:15: error: invalid use of non-static member function ‘QLayout* QWidget::layout() const’
+   17 |     setLayout(layout);
+      |               ^~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QWidget:1,
+                 from calibrate.h:4,
+                 from calibrate.cpp:2:
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:537:14: note: declared here
+  537 |     QLayout *layout() const;
+      |              ^~~~~~
+calibrate.cpp:22:5: error: ‘QLabel’ was not declared in this scope
+   22 |     QLabel *uid_label = new QLabel("Unique ID");
+      |     ^~~~~~
+calibrate.cpp:22:13: error: ‘uid_label’ was not declared in this scope
+   22 |     QLabel *uid_label = new QLabel("Unique ID");
+      |             ^~~~~~~~~
+calibrate.cpp:22:29: error: expected type-specifier before ‘QLabel’
+   22 |     QLabel *uid_label = new QLabel("Unique ID");
+      |                             ^~~~~~
+calibrate.cpp:26:18: error: ‘uid_button’ was not declared in this scope
+   26 |     QPushButton *uid_button = new QPushButton("Test");
+      |                  ^~~~~~~~~~
+calibrate.cpp:26:35: error: expected type-specifier before ‘QPushButton’
+   26 |     QPushButton *uid_button = new QPushButton("Test");
+      |                                   ^~~~~~~~~~~
+calibrate.cpp:28:13: error: ‘turnleft_label’ was not declared in this scope
+   28 |     QLabel *turnleft_label = new QLabel("Turn left");
+      |             ^~~~~~~~~~~~~~
+calibrate.cpp:28:34: error: expected type-specifier before ‘QLabel’
+   28 |     QLabel *turnleft_label = new QLabel("Turn left");
+      |                                  ^~~~~~
+calibrate.cpp:32:18: error: ‘turnleft_button’ was not declared in this scope
+   32 |     QPushButton *turnleft_button = new QPushButton("Test");
+      |                  ^~~~~~~~~~~~~~~
+calibrate.cpp:32:40: error: expected type-specifier before ‘QPushButton’
+   32 |     QPushButton *turnleft_button = new QPushButton("Test");
+      |                                        ^~~~~~~~~~~
+calibrate.cpp:34:13: error: ‘turnright_label’ was not declared in this scope
+   34 |     QLabel *turnright_label = new QLabel("Turn right");
+      |             ^~~~~~~~~~~~~~~
+calibrate.cpp:34:35: error: expected type-specifier before ‘QLabel’
+   34 |     QLabel *turnright_label = new QLabel("Turn right");
+      |                                   ^~~~~~
+calibrate.cpp:38:18: error: ‘turnright_button’ was not declared in this scope
+   38 |     QPushButton *turnright_button = new QPushButton("Test");
+      |                  ^~~~~~~~~~~~~~~~
+calibrate.cpp:38:41: error: expected type-specifier before ‘QPushButton’
+   38 |     QPushButton *turnright_button = new QPushButton("Test");
+      |                                         ^~~~~~~~~~~
+calibrate.cpp:40:13: error: ‘straight_label’ was not declared in this scope
+   40 |     QLabel *straight_label = new QLabel("Go Straight");
+      |             ^~~~~~~~~~~~~~
+calibrate.cpp:40:34: error: expected type-specifier before ‘QLabel’
+   40 |     QLabel *straight_label = new QLabel("Go Straight");
+      |                                  ^~~~~~
+calibrate.cpp:47:18: error: ‘straight_input’ was not declared in this scope; did you mean ‘straight_input2’?
+   47 |     QHBoxLayout *straight_input = new QHBoxLayout();
+      |                  ^~~~~~~~~~~~~~
+      |                  straight_input2
+calibrate.cpp:47:39: error: expected type-specifier before ‘QHBoxLayout’
+   47 |     QHBoxLayout *straight_input = new QHBoxLayout();
+      |                                       ^~~~~~~~~~~
+calibrate.cpp:50:18: error: ‘straight_button’ was not declared in this scope
+   50 |     QPushButton *straight_button = new QPushButton("Test");
+      |                  ^~~~~~~~~~~~~~~
+calibrate.cpp:50:40: error: expected type-specifier before ‘QPushButton’
+   50 |     QPushButton *straight_button = new QPushButton("Test");
+      |                                        ^~~~~~~~~~~
+make[1]: *** [Makefile:479: serialwin.o] Error 1
+make[1]: *** [Makefile:476: calibrate.o] Error 1
+make[1]: Leaving directory '/home/srolab/kilogui/src'
+make: *** [Makefile:47: sub-src-make_first] Error 2
