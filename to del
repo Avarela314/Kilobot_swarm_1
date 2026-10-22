@@ -1,27 +1,46 @@
-lsmod | grep uvcvideo
-uvcvideo              143360  0
-videobuf2_vmalloc      20480  1 uvcvideo
-uvc                    12288  1 uvcvideo
-videobuf2_v4l2         36864  1 uvcvideo
-videobuf2_common       86016  4 videobuf2_vmalloc,videobuf2_v4l2,uvcvideo,videobuf2_memops
-videodev              368640  2 videobuf2_v4l2,uvcvideo
-mc                     90112  5 videodev,snd_usb_audio,videobuf2_v4l2,uvcvideo,videobuf2_common
-user-Z170X-UD3:~$ sudo modprobe uvcvideo
-user-Z170X-UD3:~$ ls -l /dev/video*
+sudo dmesg | tail -40
+[ 9770.421405] usb 1-9: 4:7: cannot set freq 48000 to ep 0x86
+[ 9775.541280] usb 1-9: 4:7: cannot set freq 48000 to ep 0x86
+[ 9780.661157] usb 1-9: 4:7: cannot set freq 48000 to ep 0x86
+[ 9785.780967] usb 1-9: 4:7: cannot set freq 48000 to ep 0x86
+[ 9790.901002] usb 1-9: 4:7: cannot set freq 48000 to ep 0x86
+[ 9796.020839] usb 1-9: 4:7: cannot set freq 48000 to ep 0x86
+[ 9801.140802] usb 1-9: 4:7: cannot set freq 48000 to ep 0x86
+[ 9806.260769] usb 1-9: 4:7: cannot set freq 48000 to ep 0x86
+[ 9811.380636] usb 1-9: 4:7: cannot set freq 48000 to ep 0x86
+[ 9816.500579] usb 1-9: 4:7: cannot set freq 48000 to ep 0x86
+[ 9821.620753] usb 1-9: 4:7: cannot set freq 48000 to ep 0x86
+[ 9826.740462] usb 1-9: 4:7: cannot set freq 48000 to ep 0x86
+[ 9831.860427] usb 1-9: 4:7: cannot set freq 48000 to ep 0x86
+[ 9836.980302] usb 1-9: 4:7: cannot set freq 48000 to ep 0x86
+[ 9842.100165] usb 1-9: 4:7: cannot set freq 48000 to ep 0x86
+[ 9847.220095] usb 1-9: 4:7: cannot set freq 48000 to ep 0x86
+[ 9852.339958] usb 1-9: 4:7: cannot set freq 48000 to ep 0x86
+[ 9857.459876] usb 1-9: 4:7: cannot set freq 48000 to ep 0x86
+[ 9862.579800] usb 1-9: 4:7: cannot set freq 48000 to ep 0x86
+[ 9867.699791] usb 1-9: 4:7: cannot set freq 48000 to ep 0x86
+[ 9872.819714] usb 1-9: 4:7: cannot set freq 48000 to ep 0x86
+[ 9877.939691] usb 1-9: 4:7: cannot set freq 48000 to ep 0x86
+[ 9883.059477] usb 1-9: 4:7: cannot set freq 48000 to ep 0x86
+[ 9978.687441] audit: type=1400 audit(1792705192.331:172): apparmor="DENIED" operation="symlink" class="file" profile="snap.firefox.firefox" name="/dev/char/195:255" pid=8060 comm="gfxtest" requested_mask="c" denied_mask="c" fsuid=1000 ouid=1000
+[ 9978.690504] audit: type=1400 audit(1792705192.334:173): apparmor="DENIED" operation="symlink" class="file" profile="snap.firefox.firefox" name="/dev/char/195:0" pid=8060 comm="gfxtest" requested_mask="c" denied_mask="c" fsuid=1000 ouid=1000
+[ 9978.690548] audit: type=1400 audit(1792705192.334:174): apparmor="DENIED" operation="symlink" class="file" profile="snap.firefox.firefox" name="/dev/char/195:0" pid=8060 comm="gfxtest" requested_mask="c" denied_mask="c" fsuid=1000 ouid=1000
+[ 9978.690656] audit: type=1400 audit(1792705192.334:175): apparmor="DENIED" operation="symlink" class="file" profile="snap.firefox.firefox" name="/dev/char/195:0" pid=8060 comm="gfxtest" requested_mask="c" denied_mask="c" fsuid=1000 ouid=1000
+[ 9978.695092] audit: type=1400 audit(1792705192.339:176): apparmor="DENIED" operation="symlink" class="file" profile="snap.firefox.firefox" name="/dev/char/195:255" pid=8060 comm="gfxtest" requested_mask="c" denied_mask="c" fsuid=1000 ouid=1000
+[ 9978.695202] audit: type=1400 audit(1792705192.339:177): apparmor="DENIED" operation="symlink" class="file" profile="snap.firefox.firefox" name="/dev/char/195:254" pid=8060 comm="gfxtest" requested_mask="c" denied_mask="c" fsuid=1000 ouid=1000
+[ 9978.695388] audit: type=1400 audit(1792705192.339:178): apparmor="DENIED" operation="symlink" class="file" profile="snap.firefox.firefox" name="/dev/char/195:0" pid=8060 comm="gfxtest" requested_mask="c" denied_mask="c" fsuid=1000 ouid=1000
+[ 9978.695481] audit: type=1400 audit(1792705192.339:179): apparmor="DENIED" operation="symlink" class="file" profile="snap.firefox.firefox" name="/dev/char/195:0" pid=8060 comm="gfxtest" requested_mask="c" denied_mask="c" fsuid=1000 ouid=1000
+[ 9978.697816] audit: type=1107 audit(1792705192.342:180): pid=1057 uid=101 auid=4294967295 ses=4294967295 subj=unconfined msg='apparmor="DENIED" operation="dbus_method_call"  bus="system" path="/org/freedesktop/DBus" interface="org.freedesktop.DBus" member="ListNames" mask="send" name="org.freedesktop.DBus" pid=8060 label="snap.firefox.firefox" peer_label="unconfined"
+                exe="/usr/bin/dbus-daemon" sauid=101 hostname=? addr=? terminal=?'
+[ 9978.713868] audit: type=1400 audit(1792705192.358:181): apparmor="DENIED" operation="symlink" class="file" profile="snap.firefox.firefox" name="/dev/char/195:254" pid=8060 comm="gfxtest" requested_mask="c" denied_mask="c" fsuid=1000 ouid=1000
+[10124.260926] usb 1-9: USB disconnect, device number 4
+[10126.855473] usb 3-2: new high-speed USB device number 2 using xhci_hcd
+[10131.999339] usb 3-2: device descriptor read/64, error -110
+[10147.871106] usb 3-2: device descriptor read/64, error -110
+[10148.087056] usb 3-2: new high-speed USB device number 3 using xhci_hcd
+[10153.503010] usb 3-2: device descriptor read/64, error -110
+srolab@srolab-Z170X-UD3:~$ ls -l /dev/video*
 ls: cannot access '/dev/video*': No such file or directory
-user-Z170X-UD3:~$ sudo dmesg | grep -iE 'uvc|video|camera' | tail -30
-[    0.286311] pci 0000:01:00.0: Video device with shadowed ROM at [mem 0x000c0000-0x000dffff]
-[ 9472.628648] usb 1-9: Product: Lumens Document Camera
-[ 9472.854006] videodev: Linux video capture interface: v2.00
-[ 9534.393232] uvcvideo 1-9:1.0: Found UVC 1.00 device Lumens Document Camera (1d4d:6005)
-[ 9539.513088] uvcvideo 1-9:1.0: Failed to query (GET_INFO) UVC control 2 on unit 2: -110 (exp. 1).
-[ 9544.633913] uvcvideo 1-9:1.0: Failed to query (GET_INFO) UVC control 5 on unit 2: -110 (exp. 1).
-[ 9549.753025] uvcvideo 1-9:1.0: Failed to query (GET_CUR) UVC control 5 on unit 2: -110 (exp. 1).
-[ 9554.872865] uvcvideo 1-9:1.0: Failed to query (GET_INFO) UVC control 11 on unit 2: -110 (exp. 1).
-[ 9559.992723] uvcvideo 1-9:1.0: Failed to query (GET_INFO) UVC control 2 on unit 1: -110 (exp. 1).
-[ 9565.112598] uvcvideo 1-9:1.0: Failed to query (GET_INFO) UVC control 6 on unit 1: -110 (exp. 1).
-[ 9570.232623] uvcvideo 1-9:1.0: UVC non compliance - GET_DEF(PROBE) not supported. Enabling workaround.
-[ 9575.352610] uvcvideo 1-9:1.2: Failed to query (GET_CUR) UVC probe control : -110 (exp. 26).
-[ 9575.352630] uvcvideo 1-9:1.2: Failed to initialize the device (-5).
-[ 9575.352739] uvcvideo 1-9:1.0: probe with driver uvcvideo failed with error -5
-[ 9575.352807] usbcore: registered new interface driver uvcvideo
+srolab@srolab-Z170X-UD3:~$ uname -r
+7.0.0-38-generic
+srolab@srolab-Z170X-UD3:~$ lsusb -v -d ld4d:6005 2>/dev/null | head -80
