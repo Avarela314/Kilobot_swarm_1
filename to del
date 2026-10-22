@@ -1,50 +1,27 @@
-
-Udevadm info starts with the device specified by the devpath and then
-walks up the chain of parent devices. It prints for every device
-found, all possible attributes in the udev rules key format.
-A rule to match, can be composed by the attributes of the device
-and the attributes from one single parent device.
-
-  looking at device '/devices/pci0000:00/0000:00:14.0/usb1/1-9/1-9.2/1-9.2:1.0/ttyUSB0/tty/ttyUSB0':
-    KERNEL=="ttyUSB0"
-    SUBSYSTEM=="tty"
-    DRIVER==""
-    ATTR{power/async}=="disabled"
-    ATTR{power/control}=="auto"
-    ATTR{power/runtime_active_kids}=="0"
-    ATTR{power/runtime_active_time}=="0"
-    ATTR{power/runtime_enabled}=="disabled"
-    ATTR{power/runtime_status}=="unsupported"
-    ATTR{power/runtime_suspended_time}=="0"
-    ATTR{power/runtime_usage}=="0"
-
-  looking at parent device '/devices/pci0000:00/0000:00:14.0/usb1/1-9/1-9.2/1-9.2:1.0/ttyUSB0':
-    KERNELS=="ttyUSB0"
-    SUBSYSTEMS=="usb-serial"
-    DRIVERS=="ftdi_sio"
-    ATTRS{event_char}=="(not readable)"
-    ATTRS{latency_timer}=="16"
-    ATTRS{port_number}=="0"
-    ATTRS{power/async}=="enabled"
-    ATTRS{power/control}=="auto"
-    ATTRS{power/runtime_active_kids}=="0"
-    ATTRS{power/runtime_active_time}=="0"
-    ATTRS{power/runtime_enabled}=="disabled"
-    ATTRS{power/runtime_status}=="unsupported"
-    ATTRS{power/runtime_suspended_time}=="0"
-    ATTRS{power/runtime_usage}=="0"
-
-  looking at parent device '/devices/pci0000:00/0000:00:14.0/usb1/1-9/1-9.2/1-9.2:1.0':
-    KERNELS=="1-9.2:1.0"
-    SUBSYSTEMS=="usb"
-    DRIVERS=="ftdi_sio"
-~/kilogui/src$ udevadm info -q path -n /dev/ttyUSB0
-/devices/pci0000:00/0000:00:14.0/usb1/1-9/1-9.2/1-9.2:1.0/ttyUSB0/tty/ttyUSB0
-~/kilogui/src$ sudo udevadm test "$(udevadm info -q path -n /devttyUSb0)" 2>&1 | grep -E '99-kilobot|0403|6001|MODE|GROUP'
-Unknown device "/dev//devttyUSb0": No such device
-Reading rules file: /etc/udev/rules.d/99-kilobot.rules
-/etc/udev/rules.d/99-kilobot.rules:1 Invalid key/value pair, ignoring.
-~/kilogui/src$ sudo udevadm test "$(udevadm info -q path -n /devttyUSB0)" 2>&1 | grep -E '99-kilobot|0403|6001|MODE|GROUP'
-Unknown device "/dev//devttyUSB0": No such device
-Reading rules file: /etc/udev/rules.d/99-kilobot.rules
-/etc/udev/rules.d/99-kilobot.rules:1 Invalid key/value pair, ignoring.
+lsmod | grep uvcvideo
+uvcvideo              143360  0
+videobuf2_vmalloc      20480  1 uvcvideo
+uvc                    12288  1 uvcvideo
+videobuf2_v4l2         36864  1 uvcvideo
+videobuf2_common       86016  4 videobuf2_vmalloc,videobuf2_v4l2,uvcvideo,videobuf2_memops
+videodev              368640  2 videobuf2_v4l2,uvcvideo
+mc                     90112  5 videodev,snd_usb_audio,videobuf2_v4l2,uvcvideo,videobuf2_common
+user-Z170X-UD3:~$ sudo modprobe uvcvideo
+user-Z170X-UD3:~$ ls -l /dev/video*
+ls: cannot access '/dev/video*': No such file or directory
+user-Z170X-UD3:~$ sudo dmesg | grep -iE 'uvc|video|camera' | tail -30
+[    0.286311] pci 0000:01:00.0: Video device with shadowed ROM at [mem 0x000c0000-0x000dffff]
+[ 9472.628648] usb 1-9: Product: Lumens Document Camera
+[ 9472.854006] videodev: Linux video capture interface: v2.00
+[ 9534.393232] uvcvideo 1-9:1.0: Found UVC 1.00 device Lumens Document Camera (1d4d:6005)
+[ 9539.513088] uvcvideo 1-9:1.0: Failed to query (GET_INFO) UVC control 2 on unit 2: -110 (exp. 1).
+[ 9544.633913] uvcvideo 1-9:1.0: Failed to query (GET_INFO) UVC control 5 on unit 2: -110 (exp. 1).
+[ 9549.753025] uvcvideo 1-9:1.0: Failed to query (GET_CUR) UVC control 5 on unit 2: -110 (exp. 1).
+[ 9554.872865] uvcvideo 1-9:1.0: Failed to query (GET_INFO) UVC control 11 on unit 2: -110 (exp. 1).
+[ 9559.992723] uvcvideo 1-9:1.0: Failed to query (GET_INFO) UVC control 2 on unit 1: -110 (exp. 1).
+[ 9565.112598] uvcvideo 1-9:1.0: Failed to query (GET_INFO) UVC control 6 on unit 1: -110 (exp. 1).
+[ 9570.232623] uvcvideo 1-9:1.0: UVC non compliance - GET_DEF(PROBE) not supported. Enabling workaround.
+[ 9575.352610] uvcvideo 1-9:1.2: Failed to query (GET_CUR) UVC probe control : -110 (exp. 26).
+[ 9575.352630] uvcvideo 1-9:1.2: Failed to initialize the device (-5).
+[ 9575.352739] uvcvideo 1-9:1.0: probe with driver uvcvideo failed with error -5
+[ 9575.352807] usbcore: registered new interface driver uvcvideo
