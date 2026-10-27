@@ -1,5 +1,75 @@
-ls /boot/vmlinuz*
-/boot/vmlinuz                   /boot/vmlinuz-7.0.0-38-generic
-/boot/vmlinuz-7.0.0-34-generic  /boot/vmlinuz.old
-~$ uname -r
-7.0.0-38-generic
+
+import cv2
+import numpy as np
+
+# Open the webcam.
+# Change 0 to 1 if your working camera test uses index 1.
+camera = cv2.VideoCapture(0)
+
+if not camera.isOpened():
+    print("ERROR: Could not open the webcam.")
+    exit()
+
+# Request a manageable video resolution.
+camera.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+
+print("Tracking started. Press Q to quit.")
+
+while True:
+    # Read the latest webcam image.
+    success, frame = camera.read()
+
+    if not success or frame is None:
+        print("ERROR: Could not read a camera frame.")
+        break
+
+    # Convert the color image to grayscale.
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+    # Smooth the image to reduce small image details and noise.
+    gray = cv2.medianBlur(gray, 5)
+
+    # Search for circular shapes.
+    circles = cv2.HoughCircles(
+        gray,
+        cv2.HOUGH_GRADIENT,
+        dp=1.2,
+        minDist=30,
+        param1=100,
+        param2=30,
+        minRadius=5,
+        maxRadius=80
+    )
+
+    # Draw the circles found by OpenCV.
+    if circles is not None:
+        circles = np.round(circles[0]).astype(int)
+
+        for x, y, radius in circles:
+            # Draw the detected circle.
+            cv2.circle(frame, (x, y), radius, (0, 255, 0), 2)
+
+            # Mark its center.
+            cv2.circle(frame, (x, y), 3, (0, 0, 255), -1)
+
+            # Display the center coordinates in pixels.
+            cv2.putText(
+                frame,
+                f"x={x}, y={y}",
+                (x + 10, y - 10),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.5,
+                (0, 255, 0),
+                2
+            )
+
+    # Show the processed camera image.
+    cv2.imshow("Kilobot Tracking", frame)
+
+    # Press Q to quit.
+    if cv2.waitKey(1) & 0xFF == ord("q"):
+        break
+
+camera.release()
+cv2.destroyAllWindows()
