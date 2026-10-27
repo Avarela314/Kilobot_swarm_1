@@ -1,33 +1,7 @@
-sudo dmesg | tail -30
-[ 2044.802170] usb 1-9: new high-speed USB device number 5 using xhci_hcd
-[ 2050.218170] usb 1-9: device descriptor read/64, error -110
-[ 2066.089991] usb 1-9: device descriptor read/64, error -110
-[ 2066.194068] usb usb1-port9: attempt power cycle
-[ 2066.572938] usb 1-9: new high-speed USB device number 6 using xhci_hcd
-[ 2071.610036] usb 1-9: device descriptor read/8, error -110
-[ 2086.969907] usb 1-9: device descriptor read/8, error -110
-[ 2087.185813] usb 1-9: new high-speed USB device number 7 using xhci_hcd
-[ 2092.601895] usb 1-9: device descriptor read/8, error -110
-[ 2107.961569] usb 1-9: device descriptor read/8, error -110
-[ 2108.065595] usb usb1-port9: unable to enumerate USB device
-[ 2191.379894] usb 1-13: new high-speed USB device number 8 using xhci_hcd
-[ 2196.646725] usb 1-13: device descriptor read/64, error -110
-[ 2212.518349] usb 1-13: device descriptor read/64, error -110
-[ 2212.734319] usb 1-13: new high-speed USB device number 9 using xhci_hcd
-[ 2564.113732] usb 1-9: new high-speed USB device number 10 using xhci_hcd
-[ 2564.240684] usb 1-9: New USB device found, idVendor=1d4d, idProduct=6005, bcdDevice= 1.00
-[ 2564.240699] usb 1-9: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[ 2564.240707] usb 1-9: Product: Lumens Document Camera
-[ 2564.240713] usb 1-9: Manufacturer: Lumens Digital Optics Inc.
-[ 2564.240719] usb 1-9: SerialNumber: 01.00.00
-[ 2564.243352] uvcvideo 1-9:1.0: Found UVC 1.00 device Lumens Document Camera (1d4d:6005)
-[ 2564.247824] uvcvideo 1-9:1.0: UVC non compliance - GET_DEF(PROBE) not supported. Enabling workaround.
-[ 2564.247975] uvcvideo 1-9:1.2: Failed to query (GET_CUR) UVC probe control : -75 (exp. 26).
-[ 2564.247980] uvcvideo 1-9:1.2: Failed to initialize the device (-5).
-[ 2564.247990] uvcvideo 1-9:1.0: probe with driver uvcvideo failed with error -5
-[ 2599.981125] usb 1-9: 4:1: cannot set freq 16000 to ep 0x86
-[ 2605.100994] usb 1-9: 4:2: cannot set freq 24000 to ep 0x86
-[ 2610.220843] usb 1-9: 4:3: cannot set freq 24000 to ep 0x86
-[ 2615.340792] usb 1-9: 4:4: cannot set freq 48000 to ep 0x86
-~$ ls -l /dev/video*
-ls: cannot access '/dev/video*': No such file or directory
+[ WARN:0@0.099] global ./modules/videoio/src/cap_gstreamer.cpp (1356) open OpenCV | GStreamer warning: unable to start pipeline
+[ WARN:0@0.099] global ./modules/videoio/src/cap_gstreamer.cpp (862) isPipelinePlaying OpenCV | GStreamer warning: GStreamer: pipeline have not been created
+[ WARN:0@0.099] global ./modules/videoio/src/cap_v4l.cpp (902) open VIDEOIO(V4L2:/dev/video0): can't open camera by index
+Traceback (most recent call last):
+  File "/home/srolab/cameratesting.py", line 7, in <module>
+    cv2.imshow('Webcam', frame)
+cv2.error: OpenCV(4.6.0) ./modules/highgui/src/window.cpp:967: error: (-215:Assertion failed) size.width>0 && size.height>0 in function 'imshow'
