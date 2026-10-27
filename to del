@@ -1,7 +1,4 @@
-[ WARN:0@0.099] global ./modules/videoio/src/cap_gstreamer.cpp (1356) open OpenCV | GStreamer warning: unable to start pipeline
-[ WARN:0@0.099] global ./modules/videoio/src/cap_gstreamer.cpp (862) isPipelinePlaying OpenCV | GStreamer warning: GStreamer: pipeline have not been created
-[ WARN:0@0.099] global ./modules/videoio/src/cap_v4l.cpp (902) open VIDEOIO(V4L2:/dev/video0): can't open camera by index
-Traceback (most recent call last):
-  File "/home/srolab/cameratesting.py", line 7, in <module>
-    cv2.imshow('Webcam', frame)
-cv2.error: OpenCV(4.6.0) ./modules/highgui/src/window.cpp:967: error: (-215:Assertion failed) size.width>0 && size.height>0 in function 'imshow'
+lsusb | grep -i lumens
+Bus 001 Device 010: ID 1d4d:6005 PEGATRON CORPORATION Lumens Document Camera
+~$ ls -l /dev/video*
+ls: cannot access '/dev/video*': No such file or directory
