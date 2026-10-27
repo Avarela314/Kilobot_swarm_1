@@ -1,143 +1,33 @@
-lsusb -v -d 1d4d:6005 2>/dev/null | grep -E 'bInterfaceNumber|bInterfaceClass|bInterfaceSubClass|bInterfaceProtocol|VideoStreaming|bEndpointAddress'
-      bInterfaceNumber        0
-      bInterfaceClass        14 Video
-      bInterfaceSubClass      1 Video Control
-      bInterfaceProtocol      0 
-        bEndpointAddress     0x87  EP 7 IN
-      bInterfaceNumber        1
-      bInterfaceClass        14 Video
-      bInterfaceSubClass      2 Video Streaming
-      bInterfaceProtocol      0 
-      VideoStreaming Interface Descriptor:
-        bEndpointAddress                 0x88  EP 8 IN
-      VideoStreaming Interface Descriptor:
-      VideoStreaming Interface Descriptor:
-      VideoStreaming Interface Descriptor:
-      VideoStreaming Interface Descriptor:
-      VideoStreaming Interface Descriptor:
-      bInterfaceNumber        1
-      bInterfaceClass        14 Video
-      bInterfaceSubClass      2 Video Streaming
-      bInterfaceProtocol      0 
-        bEndpointAddress     0x88  EP 8 IN
-      bInterfaceNumber        1
-      bInterfaceClass        14 Video
-      bInterfaceSubClass      2 Video Streaming
-      bInterfaceProtocol      0 
-        bEndpointAddress     0x88  EP 8 IN
-      bInterfaceNumber        1
-      bInterfaceClass        14 Video
-      bInterfaceSubClass      2 Video Streaming
-      bInterfaceProtocol      0 
-        bEndpointAddress     0x88  EP 8 IN
-      bInterfaceNumber        1
-      bInterfaceClass        14 Video
-      bInterfaceSubClass      2 Video Streaming
-      bInterfaceProtocol      0 
-        bEndpointAddress     0x88  EP 8 IN
-      bInterfaceNumber        1
-      bInterfaceClass        14 Video
-      bInterfaceSubClass      2 Video Streaming
-      bInterfaceProtocol      0 
-        bEndpointAddress     0x88  EP 8 IN
-      bInterfaceNumber        1
-      bInterfaceClass        14 Video
-      bInterfaceSubClass      2 Video Streaming
-      bInterfaceProtocol      0 
-        bEndpointAddress     0x88  EP 8 IN
-      bInterfaceNumber        1
-      bInterfaceClass        14 Video
-      bInterfaceSubClass      2 Video Streaming
-      bInterfaceProtocol      0 
-        bEndpointAddress     0x88  EP 8 IN
-      bInterfaceNumber        2
-      bInterfaceClass        14 Video
-      bInterfaceSubClass      2 Video Streaming
-      bInterfaceProtocol      0 
-      VideoStreaming Interface Descriptor:
-        bEndpointAddress                 0x81  EP 1 IN
-      VideoStreaming Interface Descriptor:
-      VideoStreaming Interface Descriptor:
-      VideoStreaming Interface Descriptor:
-        bEndpointAddress                 0x00  EP 0 OUT
-      VideoStreaming Interface Descriptor:
-      VideoStreaming Interface Descriptor:
-      VideoStreaming Interface Descriptor:
-      bInterfaceNumber        2
-      bInterfaceClass        14 Video
-      bInterfaceSubClass      2 Video Streaming
-      bInterfaceProtocol      0 
-        bEndpointAddress     0x81  EP 1 IN
-      bInterfaceNumber        2
-      bInterfaceClass        14 Video
-      bInterfaceSubClass      2 Video Streaming
-      bInterfaceProtocol      0 
-        bEndpointAddress     0x81  EP 1 IN
-      bInterfaceNumber        2
-      bInterfaceClass        14 Video
-      bInterfaceSubClass      2 Video Streaming
-      bInterfaceProtocol      0 
-        bEndpointAddress     0x81  EP 1 IN
-      bInterfaceNumber        2
-      bInterfaceClass        14 Video
-      bInterfaceSubClass      2 Video Streaming
-      bInterfaceProtocol      0 
-        bEndpointAddress     0x81  EP 1 IN
-      bInterfaceNumber        2
-      bInterfaceClass        14 Video
-      bInterfaceSubClass      2 Video Streaming
-      bInterfaceProtocol      0 
-        bEndpointAddress     0x81  EP 1 IN
-      bInterfaceNumber        2
-      bInterfaceClass        14 Video
-      bInterfaceSubClass      2 Video Streaming
-      bInterfaceProtocol      0 
-        bEndpointAddress     0x81  EP 1 IN
-      bInterfaceNumber        2
-      bInterfaceClass        14 Video
-      bInterfaceSubClass      2 Video Streaming
-      bInterfaceProtocol      0 
-        bEndpointAddress     0x81  EP 1 IN
-      bInterfaceNumber        3
-      bInterfaceClass         1 Audio
-      bInterfaceSubClass      1 Control Device
-      bInterfaceProtocol      0 
-      bInterfaceNumber        4
-      bInterfaceClass         1 Audio
-      bInterfaceSubClass      2 Streaming
-      bInterfaceProtocol      0 
-      bInterfaceNumber        4
-      bInterfaceClass         1 Audio
-      bInterfaceSubClass      2 Streaming
-      bInterfaceProtocol      0 
-        bEndpointAddress     0x86  EP 6 IN
-      bInterfaceNumber        4
-      bInterfaceClass         1 Audio
-      bInterfaceSubClass      2 Streaming
-      bInterfaceProtocol      0 
-        bEndpointAddress     0x86  EP 6 IN
-      bInterfaceNumber        4
-      bInterfaceClass         1 Audio
-      bInterfaceSubClass      2 Streaming
-      bInterfaceProtocol      0 
-        bEndpointAddress     0x86  EP 6 IN
-      bInterfaceNumber        4
-      bInterfaceClass         1 Audio
-      bInterfaceSubClass      2 Streaming
-      bInterfaceProtocol      0 
-        bEndpointAddress     0x86  EP 6 IN
-      bInterfaceNumber        4
-      bInterfaceClass         1 Audio
-      bInterfaceSubClass      2 Streaming
-      bInterfaceProtocol      0 
-        bEndpointAddress     0x86  EP 6 IN
-      bInterfaceNumber        4
-      bInterfaceClass         1 Audio
-      bInterfaceSubClass      2 Streaming
-      bInterfaceProtocol      0 
-        bEndpointAddress     0x86  EP 6 IN
-      bInterfaceNumber        4
-      bInterfaceClass         1 Audio
-      bInterfaceSubClass      2 Streaming
-      bInterfaceProtocol      0 
-        bEndpointAddress     0x86  EP 6 IN
+sudo dmesg | tail -30
+[ 2044.802170] usb 1-9: new high-speed USB device number 5 using xhci_hcd
+[ 2050.218170] usb 1-9: device descriptor read/64, error -110
+[ 2066.089991] usb 1-9: device descriptor read/64, error -110
+[ 2066.194068] usb usb1-port9: attempt power cycle
+[ 2066.572938] usb 1-9: new high-speed USB device number 6 using xhci_hcd
+[ 2071.610036] usb 1-9: device descriptor read/8, error -110
+[ 2086.969907] usb 1-9: device descriptor read/8, error -110
+[ 2087.185813] usb 1-9: new high-speed USB device number 7 using xhci_hcd
+[ 2092.601895] usb 1-9: device descriptor read/8, error -110
+[ 2107.961569] usb 1-9: device descriptor read/8, error -110
+[ 2108.065595] usb usb1-port9: unable to enumerate USB device
+[ 2191.379894] usb 1-13: new high-speed USB device number 8 using xhci_hcd
+[ 2196.646725] usb 1-13: device descriptor read/64, error -110
+[ 2212.518349] usb 1-13: device descriptor read/64, error -110
+[ 2212.734319] usb 1-13: new high-speed USB device number 9 using xhci_hcd
+[ 2564.113732] usb 1-9: new high-speed USB device number 10 using xhci_hcd
+[ 2564.240684] usb 1-9: New USB device found, idVendor=1d4d, idProduct=6005, bcdDevice= 1.00
+[ 2564.240699] usb 1-9: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[ 2564.240707] usb 1-9: Product: Lumens Document Camera
+[ 2564.240713] usb 1-9: Manufacturer: Lumens Digital Optics Inc.
+[ 2564.240719] usb 1-9: SerialNumber: 01.00.00
+[ 2564.243352] uvcvideo 1-9:1.0: Found UVC 1.00 device Lumens Document Camera (1d4d:6005)
+[ 2564.247824] uvcvideo 1-9:1.0: UVC non compliance - GET_DEF(PROBE) not supported. Enabling workaround.
+[ 2564.247975] uvcvideo 1-9:1.2: Failed to query (GET_CUR) UVC probe control : -75 (exp. 26).
+[ 2564.247980] uvcvideo 1-9:1.2: Failed to initialize the device (-5).
+[ 2564.247990] uvcvideo 1-9:1.0: probe with driver uvcvideo failed with error -5
+[ 2599.981125] usb 1-9: 4:1: cannot set freq 16000 to ep 0x86
+[ 2605.100994] usb 1-9: 4:2: cannot set freq 24000 to ep 0x86
+[ 2610.220843] usb 1-9: 4:3: cannot set freq 24000 to ep 0x86
+[ 2615.340792] usb 1-9: 4:4: cannot set freq 48000 to ep 0x86
+~$ ls -l /dev/video*
+ls: cannot access '/dev/video*': No such file or directory
