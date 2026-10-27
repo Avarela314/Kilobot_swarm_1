@@ -1,4 +1,5 @@
-lsusb | grep -i lumens
-Bus 001 Device 010: ID 1d4d:6005 PEGATRON CORPORATION Lumens Document Camera
-~$ ls -l /dev/video*
-ls: cannot access '/dev/video*': No such file or directory
+ls /boot/vmlinuz*
+/boot/vmlinuz                   /boot/vmlinuz-7.0.0-38-generic
+/boot/vmlinuz-7.0.0-34-generic  /boot/vmlinuz.old
+~$ uname -r
+7.0.0-38-generic
