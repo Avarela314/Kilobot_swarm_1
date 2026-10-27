@@ -1,12 +1,1 @@
-sudo lsusb -t
-/:  Bus 001.Port 001: Dev 001, Class=root_hub, Driver=xhci_hcd/16p, 480M
-    |__ Port 005: Dev 002, If 0, Class=Human Interface Device, Driver=usbhid, 1.5M
-    |__ Port 006: Dev 003, If 0, Class=Human Interface Device, Driver=usbhid, 1.5M
-/:  Bus 002.Port 001: Dev 001, Class=root_hub, Driver=xhci_hcd/10p, 5000M
-/:  Bus 003.Port 001: Dev 001, Class=root_hub, Driver=xhci_hcd/2p, 480M
-    |__ Port 002: Dev 003, If 0, Class=Video, Driver=[none], 480M
-    |__ Port 002: Dev 003, If 1, Class=Video, Driver=[none], 480M
-    |__ Port 002: Dev 003, If 2, Class=Video, Driver=[none], 480M
-    |__ Port 002: Dev 003, If 3, Class=Audio, Driver=snd-usb-audio, 480M
-    |__ Port 002: Dev 003, If 4, Class=Audio, Driver=snd-usb-audio, 480M
-/:  Bus 004.Port 001: Dev 001, Class=root_hub, Driver=xhci_hcd/2p, 10000M
+lsusb -v -d 1d4d:6005 2>/dev/null | grep -E 'bInterfaceNumber|bInterfaceClass|bInterfaceSubClass|bInterfaceProtocol|VideoStreaming|bEndpointAddress'
