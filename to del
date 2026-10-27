@@ -1,1 +1,143 @@
 lsusb -v -d 1d4d:6005 2>/dev/null | grep -E 'bInterfaceNumber|bInterfaceClass|bInterfaceSubClass|bInterfaceProtocol|VideoStreaming|bEndpointAddress'
+      bInterfaceNumber        0
+      bInterfaceClass        14 Video
+      bInterfaceSubClass      1 Video Control
+      bInterfaceProtocol      0 
+        bEndpointAddress     0x87  EP 7 IN
+      bInterfaceNumber        1
+      bInterfaceClass        14 Video
+      bInterfaceSubClass      2 Video Streaming
+      bInterfaceProtocol      0 
+      VideoStreaming Interface Descriptor:
+        bEndpointAddress                 0x88  EP 8 IN
+      VideoStreaming Interface Descriptor:
+      VideoStreaming Interface Descriptor:
+      VideoStreaming Interface Descriptor:
+      VideoStreaming Interface Descriptor:
+      VideoStreaming Interface Descriptor:
+      bInterfaceNumber        1
+      bInterfaceClass        14 Video
+      bInterfaceSubClass      2 Video Streaming
+      bInterfaceProtocol      0 
+        bEndpointAddress     0x88  EP 8 IN
+      bInterfaceNumber        1
+      bInterfaceClass        14 Video
+      bInterfaceSubClass      2 Video Streaming
+      bInterfaceProtocol      0 
+        bEndpointAddress     0x88  EP 8 IN
+      bInterfaceNumber        1
+      bInterfaceClass        14 Video
+      bInterfaceSubClass      2 Video Streaming
+      bInterfaceProtocol      0 
+        bEndpointAddress     0x88  EP 8 IN
+      bInterfaceNumber        1
+      bInterfaceClass        14 Video
+      bInterfaceSubClass      2 Video Streaming
+      bInterfaceProtocol      0 
+        bEndpointAddress     0x88  EP 8 IN
+      bInterfaceNumber        1
+      bInterfaceClass        14 Video
+      bInterfaceSubClass      2 Video Streaming
+      bInterfaceProtocol      0 
+        bEndpointAddress     0x88  EP 8 IN
+      bInterfaceNumber        1
+      bInterfaceClass        14 Video
+      bInterfaceSubClass      2 Video Streaming
+      bInterfaceProtocol      0 
+        bEndpointAddress     0x88  EP 8 IN
+      bInterfaceNumber        1
+      bInterfaceClass        14 Video
+      bInterfaceSubClass      2 Video Streaming
+      bInterfaceProtocol      0 
+        bEndpointAddress     0x88  EP 8 IN
+      bInterfaceNumber        2
+      bInterfaceClass        14 Video
+      bInterfaceSubClass      2 Video Streaming
+      bInterfaceProtocol      0 
+      VideoStreaming Interface Descriptor:
+        bEndpointAddress                 0x81  EP 1 IN
+      VideoStreaming Interface Descriptor:
+      VideoStreaming Interface Descriptor:
+      VideoStreaming Interface Descriptor:
+        bEndpointAddress                 0x00  EP 0 OUT
+      VideoStreaming Interface Descriptor:
+      VideoStreaming Interface Descriptor:
+      VideoStreaming Interface Descriptor:
+      bInterfaceNumber        2
+      bInterfaceClass        14 Video
+      bInterfaceSubClass      2 Video Streaming
+      bInterfaceProtocol      0 
+        bEndpointAddress     0x81  EP 1 IN
+      bInterfaceNumber        2
+      bInterfaceClass        14 Video
+      bInterfaceSubClass      2 Video Streaming
+      bInterfaceProtocol      0 
+        bEndpointAddress     0x81  EP 1 IN
+      bInterfaceNumber        2
+      bInterfaceClass        14 Video
+      bInterfaceSubClass      2 Video Streaming
+      bInterfaceProtocol      0 
+        bEndpointAddress     0x81  EP 1 IN
+      bInterfaceNumber        2
+      bInterfaceClass        14 Video
+      bInterfaceSubClass      2 Video Streaming
+      bInterfaceProtocol      0 
+        bEndpointAddress     0x81  EP 1 IN
+      bInterfaceNumber        2
+      bInterfaceClass        14 Video
+      bInterfaceSubClass      2 Video Streaming
+      bInterfaceProtocol      0 
+        bEndpointAddress     0x81  EP 1 IN
+      bInterfaceNumber        2
+      bInterfaceClass        14 Video
+      bInterfaceSubClass      2 Video Streaming
+      bInterfaceProtocol      0 
+        bEndpointAddress     0x81  EP 1 IN
+      bInterfaceNumber        2
+      bInterfaceClass        14 Video
+      bInterfaceSubClass      2 Video Streaming
+      bInterfaceProtocol      0 
+        bEndpointAddress     0x81  EP 1 IN
+      bInterfaceNumber        3
+      bInterfaceClass         1 Audio
+      bInterfaceSubClass      1 Control Device
+      bInterfaceProtocol      0 
+      bInterfaceNumber        4
+      bInterfaceClass         1 Audio
+      bInterfaceSubClass      2 Streaming
+      bInterfaceProtocol      0 
+      bInterfaceNumber        4
+      bInterfaceClass         1 Audio
+      bInterfaceSubClass      2 Streaming
+      bInterfaceProtocol      0 
+        bEndpointAddress     0x86  EP 6 IN
+      bInterfaceNumber        4
+      bInterfaceClass         1 Audio
+      bInterfaceSubClass      2 Streaming
+      bInterfaceProtocol      0 
+        bEndpointAddress     0x86  EP 6 IN
+      bInterfaceNumber        4
+      bInterfaceClass         1 Audio
+      bInterfaceSubClass      2 Streaming
+      bInterfaceProtocol      0 
+        bEndpointAddress     0x86  EP 6 IN
+      bInterfaceNumber        4
+      bInterfaceClass         1 Audio
+      bInterfaceSubClass      2 Streaming
+      bInterfaceProtocol      0 
+        bEndpointAddress     0x86  EP 6 IN
+      bInterfaceNumber        4
+      bInterfaceClass         1 Audio
+      bInterfaceSubClass      2 Streaming
+      bInterfaceProtocol      0 
+        bEndpointAddress     0x86  EP 6 IN
+      bInterfaceNumber        4
+      bInterfaceClass         1 Audio
+      bInterfaceSubClass      2 Streaming
+      bInterfaceProtocol      0 
+        bEndpointAddress     0x86  EP 6 IN
+      bInterfaceNumber        4
+      bInterfaceClass         1 Audio
+      bInterfaceSubClass      2 Streaming
+      bInterfaceProtocol      0 
+        bEndpointAddress     0x86  EP 6 IN
