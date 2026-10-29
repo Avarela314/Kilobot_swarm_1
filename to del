@@ -1,4 +1,99 @@
-cd ~/kilogui
-grep -n -E 'calibStop|calibSave|calibUID|calibLeft|calibRight|calibStraight|sendDataMessage' src/kilowindow.cpp
+~/kilogui$ grep -n -E 'calibStop|calibSave|calibUID|calibLeft|calibRight|calibStraight|sendDataMessage' src/kilowindow.cpp
+60:    connect(calib, SIGNAL(calibUID(int)), this, SLOT(calibUID(int)));
+61:    connect(calib, SIGNAL(calibLeft(int)), this, SLOT(calibLeft(int)));
+62:    connect(calib, SIGNAL(calibRight(int)), this, SLOT(calibRight(int)));
+63:    connect(calib, SIGNAL(calibStraight(int)), this, SLOT(calibStraight(int)));
+64:    connect(calib, SIGNAL(calibStop()), this, SLOT(calibStop()));
+65:    connect(calib, SIGNAL(calibSave()), this, SLOT(calibSave()));
+397:void KiloWindow::sendDataMessage(uint8_t *payload, uint8_t type) {
+422:void KiloWindow::calibStop() {
+429:void KiloWindow::calibSave() {
+432:    sendDataMessage((uint8_t*)&msg, CALIB);
+434:void KiloWindow::calibUID(int x) { 
+438:    sendDataMessage((uint8_t *)&msg, CALIB);
+440:void KiloWindow::calibLeft(int x) {
+444:    sendDataMessage((uint8_t *)&msg, CALIB);
+446:void KiloWindow::calibRight(int x) {
+450:    sendDataMessage((uint8_t *)&msg, CALIB);
+452:void KiloWindow::calibStraight(int x) {
+457:    sendDataMessage((uint8_t *)&msg, CALIB);
+~/kilogui$ sed -n '380,470p' src/kilowindow.cpp
+        } else {
+            sending = true;
+            packet[0] = PACKET_HEADER;
+            packet[1] = PACKET_FORWARDMSG;
+            packet[11] = type;
+            packet[PACKET_SIZE-1]=PACKET_HEADER^PACKET_FORWARDMSG^type;
+        }
+    }
 
-sed -n '380,470p' src/kilowindow.cpp
+    if (device == 0)
+        ftdi_conn->sendCommand(packet);
+    else if (device == 1)
+        vusb_conn->sendCommand(packet);
+    else
+        serial_conn->sendCommand(packet);
+}
+
+void KiloWindow::sendDataMessage(uint8_t *payload, uint8_t type) {
+    if (sending)
+        stopSending();
+
+    QByteArray packet(PACKET_SIZE, 0);
+    uint8_t checksum = PACKET_HEADER^PACKET_FORWARDMSG^type;
+    packet[0] = PACKET_HEADER;
+    packet[1] = PACKET_FORWARDMSG;
+    for (int i = 0; i < 9; i++) {
+        packet[2+i] = payload[i];
+        checksum ^= payload[i];
+    }
+    packet[11] = type;
+    packet[PACKET_SIZE-1] = checksum;
+    sending = true;
+
+
+    if (device == 0)
+        ftdi_conn->sendCommand(packet);
+    else if (device == 1)
+        vusb_conn->sendCommand(packet);
+    else
+        serial_conn->sendCommand(packet);
+}
+
+void KiloWindow::calibStop() {
+    if (sending) {
+        sendMessage(WAKEUP);
+        sendMessage(WAKEUP);
+    }
+}
+
+void KiloWindow::calibSave() {
+    static calibmsg_t msg;
+    msg.mode = CALIB_SAVE;
+    sendDataMessage((uint8_t*)&msg, CALIB);
+}
+void KiloWindow::calibUID(int x) { 
+    static calibmsg_t msg;
+    msg.mode = CALIB_UID;
+    msg.uid = x;
+    sendDataMessage((uint8_t *)&msg, CALIB);
+}
+void KiloWindow::calibLeft(int x) {
+    static calibmsg_t msg;
+    msg.mode = CALIB_TURN_LEFT;
+    msg.turn_left = x;
+    sendDataMessage((uint8_t *)&msg, CALIB);
+}
+void KiloWindow::calibRight(int x) {
+    static calibmsg_t msg;
+    msg.mode = CALIB_TURN_RIGHT;
+    msg.turn_right = x;
+    sendDataMessage((uint8_t *)&msg, CALIB);
+}
+void KiloWindow::calibStraight(int x) {
+    static calibmsg_t msg;
+    msg.mode = CALIB_STRAIGHT;
+    msg.straight_left = x&0xFF;
+    msg.straight_right = (x>>8) & 0xFF;
+    sendDataMessage((uint8_t *)&msg, CALIB);
+}
