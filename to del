@@ -1,99 +1,41 @@
-~/kilogui$ grep -n -E 'calibStop|calibSave|calibUID|calibLeft|calibRight|calibStraight|sendDataMessage' src/kilowindow.cpp
-60:    connect(calib, SIGNAL(calibUID(int)), this, SLOT(calibUID(int)));
-61:    connect(calib, SIGNAL(calibLeft(int)), this, SLOT(calibLeft(int)));
-62:    connect(calib, SIGNAL(calibRight(int)), this, SLOT(calibRight(int)));
-63:    connect(calib, SIGNAL(calibStraight(int)), this, SLOT(calibStraight(int)));
-64:    connect(calib, SIGNAL(calibStop()), this, SLOT(calibStop()));
-65:    connect(calib, SIGNAL(calibSave()), this, SLOT(calibSave()));
-397:void KiloWindow::sendDataMessage(uint8_t *payload, uint8_t type) {
-422:void KiloWindow::calibStop() {
-429:void KiloWindow::calibSave() {
-432:    sendDataMessage((uint8_t*)&msg, CALIB);
-434:void KiloWindow::calibUID(int x) { 
-438:    sendDataMessage((uint8_t *)&msg, CALIB);
-440:void KiloWindow::calibLeft(int x) {
-444:    sendDataMessage((uint8_t *)&msg, CALIB);
-446:void KiloWindow::calibRight(int x) {
-450:    sendDataMessage((uint8_t *)&msg, CALIB);
-452:void KiloWindow::calibStraight(int x) {
-457:    sendDataMessage((uint8_t *)&msg, CALIB);
-~/kilogui$ sed -n '380,470p' src/kilowindow.cpp
-        } else {
-            sending = true;
-            packet[0] = PACKET_HEADER;
-            packet[1] = PACKET_FORWARDMSG;
-            packet[11] = type;
-            packet[PACKET_SIZE-1]=PACKET_HEADER^PACKET_FORWARDMSG^type;
-        }
-    }
-
-    if (device == 0)
-        ftdi_conn->sendCommand(packet);
-    else if (device == 1)
-        vusb_conn->sendCommand(packet);
-    else
-        serial_conn->sendCommand(packet);
-}
-
-void KiloWindow::sendDataMessage(uint8_t *payload, uint8_t type) {
-    if (sending)
-        stopSending();
-
-    QByteArray packet(PACKET_SIZE, 0);
-    uint8_t checksum = PACKET_HEADER^PACKET_FORWARDMSG^type;
-    packet[0] = PACKET_HEADER;
-    packet[1] = PACKET_FORWARDMSG;
-    for (int i = 0; i < 9; i++) {
-        packet[2+i] = payload[i];
-        checksum ^= payload[i];
-    }
-    packet[11] = type;
-    packet[PACKET_SIZE-1] = checksum;
-    sending = true;
-
-
-    if (device == 0)
-        ftdi_conn->sendCommand(packet);
-    else if (device == 1)
-        vusb_conn->sendCommand(packet);
-    else
-        serial_conn->sendCommand(packet);
-}
-
-void KiloWindow::calibStop() {
-    if (sending) {
-        sendMessage(WAKEUP);
-        sendMessage(WAKEUP);
-    }
-}
-
-void KiloWindow::calibSave() {
-    static calibmsg_t msg;
-    msg.mode = CALIB_SAVE;
-    sendDataMessage((uint8_t*)&msg, CALIB);
-}
-void KiloWindow::calibUID(int x) { 
-    static calibmsg_t msg;
-    msg.mode = CALIB_UID;
-    msg.uid = x;
-    sendDataMessage((uint8_t *)&msg, CALIB);
-}
-void KiloWindow::calibLeft(int x) {
-    static calibmsg_t msg;
-    msg.mode = CALIB_TURN_LEFT;
-    msg.turn_left = x;
-    sendDataMessage((uint8_t *)&msg, CALIB);
-}
-void KiloWindow::calibRight(int x) {
-    static calibmsg_t msg;
-    msg.mode = CALIB_TURN_RIGHT;
-    msg.turn_right = x;
-    sendDataMessage((uint8_t *)&msg, CALIB);
-}
-void KiloWindow::calibStraight(int x) {
-    static calibmsg_t msg;
-    msg.mode = CALIB_STRAIGHT;
-    msg.straight_left = x&0xFF;
-    msg.straight_right = (x>>8) & 0xFF;
-    sendDataMessage((uint8_t *)&msg, CALIB);
-}
+grep -Rni -E 'READUID|kilo_uid|CALIB_UID|uid' src
+src/moc_predefs.h:420:#define __cpp_deduction_guides 201703L
+src/kilowindow.h:67:    void calibUID(int);
+src/calibrate.h:16:    void calibUID(int);
+grep: src/kilowindow.o: binary file matches
+grep: src/moc_calibrate.o: binary file matches
+grep: src/qrc_kilogui.o: binary file matches
+src/moc_calibrate.cpp:36:QT_MOC_LITERAL(1, 12, 8), // "calibUID"
+src/moc_calibrate.cpp:47:    "CalibWindow\0calibUID\0\0calibLeft\0"
+src/moc_calibrate.cpp:99:        case 0: _t->calibUID((*reinterpret_cast< int(*)>(_a[1]))); break;
+src/moc_calibrate.cpp:113:            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CalibWindow::calibUID)) {
+src/moc_calibrate.cpp:197:void CalibWindow::calibUID(int _t1)
+src/moc_kilowindow.cpp:55:QT_MOC_LITERAL(20, 245, 8), // "calibUID"
+src/moc_kilowindow.cpp:69:    "serialShow\0calibShow\0setPort\0calibUID\0"
+src/moc_kilowindow.cpp:161:        case 16: _t->calibUID((*reinterpret_cast< int(*)>(_a[1]))); break;
+src/calibrate.cpp:27:    QLabel *uid_label = new QLabel("Unique ID");
+src/calibrate.cpp:28:    QSpinBox *uid_input = new QSpinBox();
+src/calibrate.cpp:29:    uid_input->setRange(0,65536);
+src/calibrate.cpp:30:    uid_input->setSingleStep(1);
+src/calibrate.cpp:31:    QPushButton *uid_button = new QPushButton("Test");
+src/calibrate.cpp:57:    grid->addWidget(uid_label, 0, 0);
+src/calibrate.cpp:58:    grid->addWidget(uid_input, 0, 1);
+src/calibrate.cpp:59:    grid->addWidget(uid_button, 0, 2);
+src/calibrate.cpp:75:    QObject::connect(uid_button, SIGNAL(clicked()), signalMapper, SLOT(map()));
+src/calibrate.cpp:80:    signalMapper->setMapping(uid_button, 0);
+src/calibrate.cpp:85:    values[0] = uid_input;
+src/calibrate.cpp:97:            emit calibUID(values[0]->value());
+src/images/background.svg:71:     showguides="true"
+src/images/background.svg:72:     inkscape:guide-bbox="true"
+grep: src/images/kilogui.png: binary file matches
+grep: src/images/48x48/kilogui.png: binary file matches
+grep: src/kilogui: binary file matches
+grep: src/moc_kilowindow.o: binary file matches
+src/kilowindow.cpp:60:    connect(calib, SIGNAL(calibUID(int)), this, SLOT(calibUID(int)));
+src/kilowindow.cpp:434:void KiloWindow::calibUID(int x) { 
+src/kilowindow.cpp:436:    msg.mode = CALIB_UID;
+src/kilowindow.cpp:437:    msg.uid = x;
+grep: src/calibrate.o: binary file matches
+src/packet.h:26:    READUID,
+src/packet.h:32:    CALIB_UID,
+src/packet.h:41:    uint16_t uid;
