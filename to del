@@ -1,43 +1,178 @@
-~/kilolib$ grep -Rni -E 'READUID|kilo_uid|message_rx|message_tx|message_rx_t|message_tx_t|serial' --include='*.c' --include='*.h'
-bootldr.c:24:void message_rx(message_t *msg, distance_measurement_t *dist) {
-bootldr.c:88:    kilo_message_rx = message_rx;
-kilolib.c:33:void message_rx_dummy(message_t *m, distance_measurement_t *d) { }
-kilolib.c:34:message_t *message_tx_dummy() { return NULL; }
-kilolib.c:35:void message_tx_success_dummy() {}
-kilolib.c:37:message_rx_t kilo_message_rx = message_rx_dummy;
-kilolib.c:38:message_tx_t kilo_message_tx = message_tx_dummy;
-kilolib.c:39:message_tx_success_t kilo_message_tx_success = message_tx_success_dummy;
-kilolib.c:56:uint16_t kilo_uid;                 // unique identifier (stored in EEPROM)
-kilolib.c:105:    kilo_uid = eeprom_read_byte(EEPROM_UID) | eeprom_read_byte(EEPROM_UID+1)<<8;
-kilolib.c:246:        kilo_message_rx(&rx_msg, &rx_dist);
-kilolib.c:249:    if (rx_msg.type != READUID && rx_msg.type != RUN && rx_msg.type != CALIB)
-kilolib.c:281:                        eeprom_write_byte(EEPROM_UID, kilo_uid&0xFF);
-kilolib.c:282:                        eeprom_write_byte(EEPROM_UID+1, (kilo_uid>>8)&0xFF);
-kilolib.c:292:                    kilo_uid = calibmsg->uid;
-kilolib.c:323:        case READUID:
-kilolib.c:331:            if (kilo_uid&(1<<rx_msg.data[0]))
-kilolib.c:509:        message_t *msg = kilo_message_tx();
-kilolib.c:512:                kilo_message_tx_success();
-kilolib.c:525:    kilo_message_rx(&rx_msg, &rx_dist);
-message.h:18:    READUID,
-message.h:34: * @see message_crc, kilo_message_rx, kilo_message_tx,
-message.h:35: * kilo_message_tx_success
-kilolib.h:21: * (::kilo_message_rx), message transmission (::kilo_message_tx), and
-kilolib.h:22: * notification of successful transmission (::kilo_message_tx_success).
-kilolib.h:58:typedef void (*message_rx_t)(message_t *, distance_measurement_t *d);
-kilolib.h:59:typedef message_t *(*message_tx_t)(void);
-kilolib.h:60:typedef void (*message_tx_success_t)(void);
-kilolib.h:103:extern uint16_t kilo_uid;
-kilolib.h:176: *      kilo_message_rx = rx_message;
-kilolib.h:184: * @see message_t, message_crc, kilo_message_tx, kilo_message_tx_success
-kilolib.h:186:extern message_rx_t kilo_message_rx;
-kilolib.h:229: *     kilo_message_tx = tx_message;
-kilolib.h:231: *     kilo_message_tx_success = tx_message_success;
-kilolib.h:241: * @see message_t, message_crc, kilo_message_tx, kilo_message_tx_success
-kilolib.h:243:extern message_tx_t kilo_message_tx;
-kilolib.h:251: * @note For example usage see ::kilo_message_tx .
-kilolib.h:257: * @see message_t, message_crc, kilo_message_tx, kilo_message_tx_success
-kilolib.h:259:extern message_tx_success_t kilo_message_tx_success;
-message_buffered.h:73:    kilo_message_rx = rxbuffer_push;
-message_buffered.h:74:    kilo_message_tx = txbuffer_peek;
-message_buffered.h:75:    kilo_message_tx_success = txbuffer_pop;
+~/kilolib$ sed -n '230,345p' kilolib.c
+                            set_motors(0, 0xFF);
+                            set_motors(0xFF, 0xFF);
+                            _delay_ms(15);
+                            set_motors(kilo_straight_left, kilo_straight_right);
+                        }
+                    }
+                }
+                break;
+        }
+    }
+}
+
+static inline void process_message() {
+    AddressPointer_t reset = (AddressPointer_t)0x0000, bootload = (AddressPointer_t)0x7000;
+    calibmsg_t *calibmsg = (calibmsg_t*)&rx_msg.data;
+    if (rx_msg.type < BOOT) {
+        kilo_message_rx(&rx_msg, &rx_dist);
+        return;
+    }
+    if (rx_msg.type != READUID && rx_msg.type != RUN && rx_msg.type != CALIB)
+        motors_off();
+    switch (rx_msg.type) {
+        case BOOT:
+            tx_timer_off();
+            bootload();
+            break;
+        case RESET:
+            reset();
+            break;
+        case SLEEP:
+            kilo_state = SLEEPING;
+            break;
+        case WAKEUP:
+            kilo_state = IDLE;
+            break;
+        case CHARGE:
+            kilo_state = CHARGING;
+            break;
+        case VOLTAGE:
+            kilo_state = BATTERY;
+            break;
+        case RUN:
+            if (kilo_state != SETUP && kilo_state != RUNNING) {
+                motors_on();
+                kilo_state = SETUP;
+            }
+            break;
+        case CALIB:
+            switch(calibmsg->mode) {
+                case CALIB_SAVE:
+                    if (kilo_state == MOVING) {
+                        eeprom_write_byte(EEPROM_UID, kilo_uid&0xFF);
+                        eeprom_write_byte(EEPROM_UID+1, (kilo_uid>>8)&0xFF);
+                        eeprom_write_byte(EEPROM_LEFT_ROTATE, kilo_turn_left);
+                        eeprom_write_byte(EEPROM_RIGHT_ROTATE, kilo_turn_right);
+                        eeprom_write_byte(EEPROM_LEFT_STRAIGHT, kilo_straight_left);
+                        eeprom_write_byte(EEPROM_RIGHT_STRAIGHT, kilo_straight_right);
+                        motors_off();
+                        kilo_state = IDLE;
+                    }
+                    break;
+                case CALIB_UID:
+                    kilo_uid = calibmsg->uid;
+                    cur_motion = MOVE_STOP;
+                    break;
+                case CALIB_TURN_LEFT:
+                    if (cur_motion != MOVE_LEFT || kilo_turn_left != calibmsg->turn_left) {
+                        prev_motion = MOVE_STOP;
+                        cur_motion = MOVE_LEFT;
+                        kilo_turn_left = calibmsg->turn_left;
+                    }
+                    break;
+                case CALIB_TURN_RIGHT:
+                    if (cur_motion != MOVE_RIGHT || kilo_turn_right != calibmsg->turn_right) {
+                        prev_motion = MOVE_STOP;
+                        cur_motion = MOVE_RIGHT;
+                        kilo_turn_right = calibmsg->turn_right;
+                    }
+                    break;
+                case CALIB_STRAIGHT:
+                    if (cur_motion != MOVE_STRAIGHT || kilo_straight_right != calibmsg->straight_right || kilo_straight_left != calibmsg->straight_left) {
+                        prev_motion = MOVE_STOP;
+                        cur_motion = MOVE_STRAIGHT;
+                        kilo_straight_left = calibmsg->straight_left;
+                        kilo_straight_right = calibmsg->straight_right;
+                    }
+                    break;
+            }
+            if (calibmsg->mode != CALIB_SAVE && kilo_state != MOVING) {
+                motors_on();
+                kilo_state = MOVING;
+            }
+            break;
+        case READUID:
+            if (kilo_state != MOVING) {
+                motors_on();
+                set_color(RGB(0,0,0));
+                prev_motion = cur_motion = MOVE_STOP;
+                kilo_state = MOVING;
+            }
+
+            if (kilo_uid&(1<<rx_msg.data[0]))
+                cur_motion = MOVE_LEFT;
+            else
+                cur_motion = MOVE_STOP;
+            break;
+        default:
+            break;
+    }
+}
+
+void delay(uint16_t ms) {
+    while (ms > 0) {
+        _delay_ms(1);
+        ms--;
+    }
+~/kilolib$ sed -n '1,90p' message.h
+#ifndef __MESSAGES_H__
+#define __MESSAGES_H__
+
+#include <stdint.h>
+
+typedef enum {
+    NORMAL = 0,
+    GPS,
+    BOOT = 0x80,
+    BOOTPGM_PAGE,
+    BOOTPGM_SIZE,
+    RESET,
+    SLEEP,
+    WAKEUP,
+    CHARGE,
+    VOLTAGE,
+    RUN,
+    READUID,
+    CALIB,
+} message_type_t;
+
+/**
+ * @brief Message structure.
+ *
+ * A message structure is 12 bytes in length and is composed of three
+ * parts: the payload (9 bytes), the message type (1 byte), and a CRC (2
+ * bytes).
+ *
+ * @note When preparing a message for transmission, at a minimum you
+ * must specify the type (use a value between 0 and 127 for user
+ * messages) and the CRC (use the message_crc() function for this
+ * purpose).
+ *
+~/kilolib$ sed -n '90,115p' kilolib.c
+
+    rx_busy = 0;
+    rx_leadingbit = 1;
+    rx_leadingbyte = 1;
+    rx_byteindex = 0;
+    rx_bytevalue = 0;
+#ifndef BOOTLOADER
+    tx_mask = eeprom_read_byte(EEPROM_TXMASK);
+    if (tx_mask & ~TX_MASK_MAX)
+        tx_mask = TX_MASK_MIN;
+    tx_clock = 0;
+    tx_increment = 255;
+    kilo_ticks = 0;
+    kilo_state = IDLE;
+    kilo_tx_period = 3906;
+    kilo_uid = eeprom_read_byte(EEPROM_UID) | eeprom_read_byte(EEPROM_UID+1)<<8;
+    kilo_turn_left = eeprom_read_byte(EEPROM_LEFT_ROTATE);
+    kilo_turn_right = eeprom_read_byte(EEPROM_RIGHT_ROTATE);
+    kilo_straight_left = eeprom_read_byte(EEPROM_LEFT_STRAIGHT);
+    kilo_straight_right = eeprom_read_byte(EEPROM_RIGHT_STRAIGHT);
+
+    uint8_t i;
+    for (i=0; i<14; i++) {
+        kilo_irlow[i]=(eeprom_read_byte(EEPROM_IRLOW + i*2) <<8) | eeprom_read_byte(EEPROM_IRLOW + i*2+1);
+        kilo_irhigh[i]=(eeprom_read_byte(EEPROM_IRHIGH + i*2) <<8) | eeprom_read_byte(EEPROM_IRHIGH + i*2+1);
+    }
