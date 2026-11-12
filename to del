@@ -1,140 +1,149 @@
-~/kilogui$ sed -n '320,420p' src/kilowindow.cpp
-        if (info.isReadable()) {
-            ((QPushButton *)sender())->setText(info.fileName());
-            if (connected)
-                upload_button->setEnabled(true);
+~/kilolib$ sed -n '130,240p' kilolib.c
+ * Watchdog timer interrupt.
+ * Used to wakeup from low power sleep mode.
+ */
+ISR(WDT_vect) {
+    wdt_disable();
+}
+
+enum {
+    MOVE_STOP,
+    MOVE_LEFT,
+    MOVE_RIGHT,
+    MOVE_STRAIGHT
+};
+
+static volatile uint8_t prev_motion = MOVE_STOP, cur_motion = MOVE_STOP;
+
+void kilo_start(void (*setup)(void), void (*loop)(void)) {
+    int16_t voltage;
+    uint8_t has_setup = 0;
+    while (1) {
+        switch(kilo_state) {
+            case SLEEPING:
+                cli();
+                acomp_off();
+                adc_off();
+                ports_off();
+                wdt_enable(WDTO_8S);
+                WDTCSR |= (1<<WDIE);
+                set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+                cli();
+                sleep_enable();
+                sei();
+                sleep_cpu();
+                sleep_disable();
+                sei();
+                rx_busy = 0;
+                ports_on();
+                adc_on();
+                _delay_us(300);
+                acomp_on();
+
+                set_color(RGB(3,3,3));
+                _delay_ms(10);
+                if (rx_busy) {
+                    set_color(RGB(3,0,0));
+                    _delay_ms(100);
+                }
+                set_color(RGB(0,0,0));
+                break;
+            case IDLE:
+                set_color(RGB(0,3,0));
+                _delay_ms(1);
+                set_color(RGB(0,0,0));
+                _delay_ms(200);
+                break;
+            case BATTERY:
+                voltage = get_voltage();
+                if(voltage > 682)
+                    set_color(RGB(0,3,0));
+                else if(voltage > 648)
+                    set_color(RGB(0,0,3));
+                else if(voltage > 614)
+                    set_color(RGB(3,3,0));
+                else
+                    set_color(RGB(3,0,0));
+                break;
+            case CHARGING:
+                if (is_charging()) {
+                    set_color(RGB(1,0,0));
+                    _delay_ms(1);
+                    set_color(RGB(0,0,0));
+                    _delay_ms(200);
+                } else
+                    set_color(RGB(0,0,0));
+                break;
+            case SETUP:
+                if (!has_setup) {
+                    setup();
+                    has_setup = 1;
+                }
+                kilo_state = RUNNING;
+            case RUNNING:
+                loop();
+                break;
+            case MOVING:
+                if (cur_motion == MOVE_STOP) {
+                    set_motors(0,0);
+                    prev_motion = MOVE_STOP;
+                } else {
+                    if (cur_motion != prev_motion) {
+                        prev_motion = cur_motion;
+                        if (cur_motion == MOVE_LEFT) {
+                            set_motors(0xFF, 0);
+                            _delay_ms(15);
+                            set_motors(kilo_turn_left, 0);
+                        } else if (cur_motion == MOVE_RIGHT) {
+                            set_motors(0, 0xFF);
+                            _delay_ms(15);
+                            set_motors(0, kilo_turn_right);
+                        } else {
+                            set_motors(0, 0xFF);
+                            set_motors(0xFF, 0xFF);
+                            _delay_ms(15);
+                            set_motors(kilo_straight_left, kilo_straight_right);
+                        }
+                    }
+                }
+                break;
         }
-        else {
-            QMessageBox::critical(this, "Kilobots Toolkit", "Unable to open program file for reading.");
-            ((QPushButton *)sender())->setText("[select file]");
-            program_file = "";
-        }
-    }
-}
-
-void KiloWindow::uploadProgram() {
-    if (sending) {
-        stopSending();
-    }
-    if (program_file.isEmpty()) {
-         QMessageBox::critical(this, "Kilobots Toolkit", "You must select a program file to upload.");
-    }
-    else {
-        sending = true;
-        if (device == 0)
-            ftdi_conn->sendProgram(program_file);
-        else if (device == 1)
-            vusb_conn->sendProgram(program_file);
-        else
-            serial_conn->sendProgram(program_file);
-    }
-}
-
-void KiloWindow::stopSending() {
-    if (sending)
-        sendMessage(COMMAND_STOP);
-    QList<QPushButton*>::iterator i;
-    for (i = toggle_buttons.begin(); i != toggle_buttons.end(); i++) {
-        if ((*i)->isChecked())
-            (*i)->setChecked(false);
-    }
-}
-
-void KiloWindow::sendMessage(int type_int) {
-    unsigned char type = (unsigned char)type_int;
-    QByteArray packet(PACKET_SIZE, 0);
-    if (type == COMMAND_STOP) {
-        sending = false;
-        packet[0] = PACKET_HEADER;
-        packet[1] = PACKET_STOP;
-        packet[PACKET_SIZE-1]=PACKET_HEADER^PACKET_STOP;
-    } else  {
-        if (sending) {
-            stopSending();
-            return;
-        }
-
-        if (type == COMMAND_LEDTOGGLE) {
-            sending = false;
-            packet[0] = PACKET_HEADER;
-            packet[1] = PACKET_LEDTOGGLE;
-            packet[PACKET_SIZE-1]=PACKET_HEADER^PACKET_LEDTOGGLE;
-        } else {
-            sending = true;
-            packet[0] = PACKET_HEADER;
-            packet[1] = PACKET_FORWARDMSG;
-            packet[11] = type;
-            packet[PACKET_SIZE-1]=PACKET_HEADER^PACKET_FORWARDMSG^type;
+~/kilogui$ sed -n '65,100p' src/ftdiconn.cpp
+                status_msg = QString("%1").arg(ftdic->error_str);
+                ftdi_usb_close(ftdic);
+                ftdi_free(ftdic);
+                ftdic = NULL;
+            }
         }
     }
 
-    if (device == 0)
-        ftdi_conn->sendCommand(packet);
-    else if (device == 1)
-        vusb_conn->sendCommand(packet);
-    else
-        serial_conn->sendCommand(packet);
+    emit status(status_msg);
 }
 
-void KiloWindow::sendDataMessage(uint8_t *payload, uint8_t type) {
-    if (sending)
-        stopSending();
-
-    QByteArray packet(PACKET_SIZE, 0);
-    uint8_t checksum = PACKET_HEADER^PACKET_FORWARDMSG^type;
-    packet[0] = PACKET_HEADER;
-    packet[1] = PACKET_FORWARDMSG;
-    for (int i = 0; i < 9; i++) {
-        packet[2+i] = payload[i];
-        checksum ^= payload[i];
+void FTDIConnection::sendCommand(QByteArray cmd) {
+    mode = MODE_NORMAL;
+    if (ftdic != NULL) {
+        if (ftdi_write_data(ftdic, (unsigned char *)cmd.constData(), cmd.length()) != cmd.length())
+            emit error(QString(ftdic->error_str));
+    } else {
+        emit error("cannot send command if disconnected from usb device.");
     }
-    packet[11] = type;
-    packet[PACKET_SIZE-1] = checksum;
-    sending = true;
-
-
-    if (device == 0)
-        ftdi_conn->sendCommand(packet);
-    else if (device == 1)
-        vusb_conn->sendCommand(packet);
-    else
-        serial_conn->sendCommand(packet);
 }
-~/kilogui$ grep -Rni -E 'PACKET_FORWARDMSG|sendCommand|sendDataMessage' src --include='*.cpp' --include ='*.h'
-src/ftdiconn.cpp:76:void FTDIConnection::sendCommand(QByteArray cmd) {
-src/ftdiconn.cpp:109:            packet[1] = PACKET_FORWARDMSG;
-src/ftdiconn.cpp:112:            packet[PACKET_SIZE-1] = PACKET_HEADER^PACKET_FORWARDMSG^page_total^BOOTPGM_SIZE;
-src/vusbconn.cpp:106:void VUSBConnection::sendCommand(QByteArray cmd) {
-src/vusbconn.cpp:139:            packet[1] = PACKET_FORWARDMSG;
-src/vusbconn.cpp:142:            packet[PACKET_SIZE-1] = PACKET_HEADER^PACKET_FORWARDMSG^page_total^BOOTPGM_SIZE;
-src/moc_kilowindow.cpp:49:QT_MOC_LITERAL(14, 183, 15), // "sendDataMessage"
-src/moc_kilowindow.cpp:68:    "sendDataMessage\0uint8_t*\0uint8_t\0"
-src/moc_kilowindow.cpp:157:        case 12: _t->sendDataMessage((*reinterpret_cast< uint8_t*(*)>(_a[1])),(*reinterpret_cast< uint8_t(*)>(_a[2]))); break;
-src/moc_ftdiconn.cpp:40:QT_MOC_LITERAL(5, 38, 11), // "sendCommand"
-src/moc_ftdiconn.cpp:50:    "sendCommand\0sendProgram\0open\0close\0"
-src/moc_ftdiconn.cpp:108:        case 3: _t->sendCommand((*reinterpret_cast< QByteArray(*)>(_a[1]))); break;
-src/moc_serialconn.cpp:40:QT_MOC_LITERAL(5, 40, 11), // "sendCommand"
-src/moc_serialconn.cpp:50:    "error\0sendCommand\0sendProgram\0open\0"
-src/moc_serialconn.cpp:108:        case 3: _t->sendCommand((*reinterpret_cast< QByteArray(*)>(_a[1]))); break;
-src/serialconn.cpp:180:void SerialConnection::sendCommand(QByteArray cmd) {
-src/serialconn.cpp:225:            packet[1] = PACKET_FORWARDMSG;
-src/serialconn.cpp:228:            packet[PACKET_SIZE-1] = PACKET_HEADER^PACKET_FORWARDMSG^page_total^BOOTPGM_SIZE;
-src/kilowindow.cpp:383:            packet[1] = PACKET_FORWARDMSG;
-src/kilowindow.cpp:385:            packet[PACKET_SIZE-1]=PACKET_HEADER^PACKET_FORWARDMSG^type;
-src/kilowindow.cpp:390:        ftdi_conn->sendCommand(packet);
-src/kilowindow.cpp:392:        vusb_conn->sendCommand(packet);
-src/kilowindow.cpp:394:        serial_conn->sendCommand(packet);
-src/kilowindow.cpp:397:void KiloWindow::sendDataMessage(uint8_t *payload, uint8_t type) {
-src/kilowindow.cpp:402:    uint8_t checksum = PACKET_HEADER^PACKET_FORWARDMSG^type;
-src/kilowindow.cpp:404:    packet[1] = PACKET_FORWARDMSG;
-src/kilowindow.cpp:415:        ftdi_conn->sendCommand(packet);
-src/kilowindow.cpp:417:        vusb_conn->sendCommand(packet);
-src/kilowindow.cpp:419:        serial_conn->sendCommand(packet);
-src/kilowindow.cpp:432:    sendDataMessage((uint8_t*)&msg, CALIB);
-src/kilowindow.cpp:438:    sendDataMessage((uint8_t *)&msg, CALIB);
-src/kilowindow.cpp:444:    sendDataMessage((uint8_t *)&msg, CALIB);
-src/kilowindow.cpp:450:    sendDataMessage((uint8_t *)&msg, CALIB);
-src/kilowindow.cpp:457:    sendDataMessage((uint8_t *)&msg, CALIB);
-src/moc_vusbconn.cpp:39:QT_MOC_LITERAL(4, 29, 11), // "sendCommand"
-src/moc_vusbconn.cpp:46:    "VUSBConnection\0status\0\0error\0sendCommand\0"
-src/moc_vusbconn.cpp:97:        case 2: _t->sendCommand((*reinterpret_cast< QByteArray(*)>(_a[1]))); break;
+
+void FTDIConnection::sendProgram(QString file) {
+    if (ftdic != NULL) {
+        data.load(file.toStdString());
+        page_total = data.size()/PAGE_SIZE+1;
+        if (page_total > 220)
+            page_total = 220;
+        page = page_total;
+        if (!(mode&MODE_UPLOAD)) {
+            mode |= MODE_UPLOAD;
+            delay.start();
+            QMetaObject::invokeMethod(this, "programLoop", Qt::QueuedConnection);
+        }
+    } else {
+        emit error("cannot upload program if disconnected from usb device.");
+    }
+    }
+}
