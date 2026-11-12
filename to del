@@ -1,52 +1,86 @@
-~/kilolib$ grep -n -E 'USART_RX_vect|has_new_packet|packet_checksum|PACKET_SIZE|PACKET_HEADER' ohc.c
-10:uint8_t packet_buffer[PACKET_SIZE];
-12:uint8_t packet_checksum = 0;
-13:uint8_t new_packet[PACKET_SIZE];
-15:volatile uint8_t has_new_packet = 0;
-94:        if (has_new_packet) {
-95:            has_new_packet = 0;
-111:                while(!has_new_packet) {
-132:                while(!has_new_packet) {
-145:                for (i = 0; i<SPM_PAGESIZE && !has_new_packet; i+=6) {
-162:                for (i = 2; i<PACKET_SIZE-GPS_MSGSIZE; i += GPS_MSGSIZE) {
-183:ISR(USART_RX_vect) {
-186:    packet_checksum ^= packet_buffer[packet_head];
-188:    packet_checksum ^= rx;
-190:    if (packet_head >= PACKET_SIZE)
-193:    if (packet_buffer[packet_head] == PACKET_HEADER) {
-194:        if (packet_checksum == 0) {
-196:            uint16_t num = PACKET_SIZE-packet_head;
-199:            for (i = num; i < PACKET_SIZE; i++)
-201:            has_new_packet = 1;
-~/kilolib$ sed -n '175,290p' ohc.c
+~/kilolib$ sed -n '80,145p' ohc.c
+    bootmsg = (bootmsg_t*)msg.data;
+    gpsmsg = (gpsmsg_t*)msg.data;
+    rawmsg = (uint8_t*)&msg;
+
+    // Use LEDs to flash power on indicator signal.
+    uint8_t i;
+    for (i=0; i<5; i++) {
+        led_port |= led_mask;
+        _delay_ms(200);
+        led_port &= ~led_mask;
+        _delay_ms(200);
+    }
+
+    while(1) {
+        if (has_new_packet) {
+            has_new_packet = 0;
+            switch(packet_type) {
+            case PACKET_STOP:
                 break;
-            }
-        }
-    }
-
-    return 0;
-}
-
-ISR(USART_RX_vect) {
-    uint8_t rx = UDR0;
-
-    packet_checksum ^= packet_buffer[packet_head];
-    packet_buffer[packet_head] = rx;
-    packet_checksum ^= rx;
-    packet_head++;
-    if (packet_head >= PACKET_SIZE)
-        packet_head = 0;
-
-    if (packet_buffer[packet_head] == PACKET_HEADER) {
-        if (packet_checksum == 0) {
-            uint16_t i;
-            uint16_t num = PACKET_SIZE-packet_head;
-            for (i = 0; i < num; i++)
-                new_packet[i] = packet_buffer[i+packet_head];
-            for (i = num; i < PACKET_SIZE; i++)
-                new_packet[i] = packet_buffer[i-num];
-            has_new_packet = 1;
-            packet_type = new_packet[1];
-        }
-    }
-}
+            case PACKET_LEDTOGGLE:
+                leds_toggle = !leds_toggle;
+                if (leds_toggle) {
+                    led_port |= led_mask;
+                } else {
+                    led_port &= ~led_mask;
+                }
+                break;
+            case PACKET_FORWARDMSG:
+                for (i = 0; i<sizeof(message_t)-sizeof(msg.crc); i++)
+                    rawmsg[i] = new_packet[i+2];
+                msg.crc = message_crc(&msg);
+                while(!has_new_packet) {
+                    message_send(&msg);
+                    led_port |= led_mask;
+                    _delay_ms(3);
+                    led_port &= ~led_mask;
+                    _delay_ms(3);
+                }
+                break;
+            case PACKET_FORWARDMSGSINGLE:
+                for (i = 0; i<sizeof(message_t)-sizeof(msg.crc); i++)
+                    rawmsg[i] = new_packet[i+2];
+                msg.crc = message_crc(&msg);
+                message_send(&msg);
+                led_port |= led_mask;
+                _delay_ms(3);
+                led_port &= ~led_mask;
+                _delay_ms(3);
+                break;
+            case PACKET_FORWARDRAWMSG:
+                for (i = 0; i<sizeof(message_t); i++)
+                    rawmsg[i] = new_packet[i+2];
+                while(!has_new_packet) {
+                    message_send(&msg);
+                    led_port |= led_mask;
+                    _delay_ms(3);
+                    led_port &= ~led_mask;
+                    _delay_ms(3);
+                }
+                break;
+            case PACKET_BOOTPAGE:
+                msg.type = BOOTPGM_PAGE;
+                bootmsg->page_address = new_packet[2];
+                bootmsg->unused = 0;
+                cli();
+                for (i = 0; i<SPM_PAGESIZE && !has_new_packet; i+=6) {
+~/kilolib$ grep -n -A12 -B5 'case WAKEUP' kilolib.c
+257-            reset();
+258-            break;
+259-        case SLEEP:
+260-            kilo_state = SLEEPING;
+261-            break;
+262:        case WAKEUP:
+263-            kilo_state = IDLE;
+264-            break;
+265-        case CHARGE:
+266-            kilo_state = CHARGING;
+267-            break;
+268-        case VOLTAGE:
+269-            kilo_state = BATTERY;
+270-            break;
+271-        case RUN:
+272-            if (kilo_state != SETUP && kilo_state != RUNNING) {
+273-                motors_on();
+274-                kilo_state = SETUP;
