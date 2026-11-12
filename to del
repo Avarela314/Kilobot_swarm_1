@@ -1,6 +1,75 @@
-find ~/kilogui ~/kilolib -type f \
-  \( -iname '*ohc*' -o -iname '*overhead*' -o -iname '*base*' \)
+~/kilogui$ cat src/packet.h
+// 01010101
+#define PAGE_SIZE 128
+#define PACKET_HEADER 0x55
+#define PACKET_SIZE   PAGE_SIZE+4
+enum {
+    PACKET_STOP,
+    PACKET_LEDTOGGLE,
+    PACKET_FORWARDMSG,
+    PACKET_FORWARDRAWMSG,
+    PACKET_BOOTPAGE
+};
 
-grep -Rni -E 'PACKET_FORWARDMSG|FORWARDRAWMSG|FORWARDMSG' \
+typedef enum {
+    NORMAL = 0,
+    GPS,
+    SPECIAL = 0x80,
+    BOOT = 0x80,
+    BOOTPGM_PAGE,
+    BOOTPGM_SIZE,
+    RESET,
+    SLEEP,
+    WAKEUP,
+    CHARGE,
+    VOLTAGE,
+    RUN,
+    READUID,
+    CALIB
+} message_type_t;
+
+enum {
+    CALIB_SAVE,
+    CALIB_UID,
+    CALIB_TURN_LEFT,
+    CALIB_TURN_RIGHT,
+    CALIB_STRAIGHT
+};
+
+#pragma pack(1)
+typedef  struct  __attribute__((__packed__)) {
+    uint8_t mode;
+    uint16_t uid;
+    uint8_t turn_left;
+    uint8_t turn_right;
+    uint8_t straight_left;
+    uint8_t straight_right;
+    uint16_t unused;
+} calibmsg_t;
+~/kilogui$ find ~/kilogui ~/kilolib -type f \
+  \( -iname '*ohc*' -o -iname '*overhead*' -o -iname '*base*' \)
+/home/kilogui/.git/hooks/pre-rebase.sample
+/home/kilolib/ohc.c
+/home/kilolib/.git/hooks/pre-rebase.sample
+/home/kilolib/ohc.h
+~/kilogui$ grep -Rni -E 'PACKET_FORWARDMSG|FORWARDRAWMSG|FORWARDMSG' \
   ~/kilogui ~/kilolib \
   --include='*.c' --include='*.h' --include='*.cpp'
+/home/srolab/kilogui/src/ftdiconn.cpp:109:            packet[1] = PACKET_FORWARDMSG;
+/home/srolab/kilogui/src/ftdiconn.cpp:112:            packet[PACKET_SIZE-1] = PACKET_HEADER^PACKET_FORWARDMSG^page_total^BOOTPGM_SIZE;
+/home/srolab/kilogui/src/vusbconn.cpp:139:            packet[1] = PACKET_FORWARDMSG;
+/home/srolab/kilogui/src/vusbconn.cpp:142:            packet[PACKET_SIZE-1] = PACKET_HEADER^PACKET_FORWARDMSG^page_total^BOOTPGM_SIZE;
+/home/srolab/kilogui/src/serialconn.cpp:225:            packet[1] = PACKET_FORWARDMSG;
+/home/srolab/kilogui/src/serialconn.cpp:228:            packet[PACKET_SIZE-1] = PACKET_HEADER^PACKET_FORWARDMSG^page_total^BOOTPGM_SIZE;
+/home/srolab/kilogui/src/kilowindow.cpp:383:            packet[1] = PACKET_FORWARDMSG;
+/home/srolab/kilogui/src/kilowindow.cpp:385:            packet[PACKET_SIZE-1]=PACKET_HEADER^PACKET_FORWARDMSG^type;
+/home/srolab/kilogui/src/kilowindow.cpp:402:    uint8_t checksum = PACKET_HEADER^PACKET_FORWARDMSG^type;
+/home/srolab/kilogui/src/kilowindow.cpp:404:    packet[1] = PACKET_FORWARDMSG;
+/home/srolab/kilogui/src/packet.h:8:    PACKET_FORWARDMSG,
+/home/srolab/kilogui/src/packet.h:9:    PACKET_FORWARDRAWMSG,
+/home/srolab/kilolib/ohc.c:107:            case PACKET_FORWARDMSG:
+/home/srolab/kilolib/ohc.c:119:            case PACKET_FORWARDMSGSINGLE:
+/home/srolab/kilolib/ohc.c:129:            case PACKET_FORWARDRAWMSG:
+/home/srolab/kilolib/ohc.h:14:    PACKET_FORWARDMSG,
+/home/srolab/kilolib/ohc.h:15:    PACKET_FORWARDRAWMSG,
+/home/srolab/kilolib/ohc.h:18:    PACKET_FORWARDMSGSINGLE,
