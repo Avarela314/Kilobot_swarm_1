@@ -1,15 +1,64 @@
-~/kilolib$ grep -n -E 'EEPROM_UID|kilo_uid[[:space:]]*=' kilolib.c
-18:#define EEPROM_UID            (uint8_t*)0xB0
-105:    kilo_uid = eeprom_read_byte(EEPROM_UID) | eeprom_read_byte(EEPROM_UID+1)<<8;
-281:                        eeprom_write_byte(EEPROM_UID, kilo_uid&0xFF);
-282:                        eeprom_write_byte(EEPROM_UID+1, (kilo_uid>>8)&0xFF);
-292:                    kilo_uid = calibmsg->uid;
-~/kilolib$ grep -R -n -E 'EEPROM_UID|EEPROM.*UID|kilo_uid'
-kilolib.c:18:#define EEPROM_UID            (uint8_t*)0xB0
-kilolib.c:56:uint16_t kilo_uid;                 // unique identifier (stored in EEPROM)
-kilolib.c:105:    kilo_uid = eeprom_read_byte(EEPROM_UID) | eeprom_read_byte(EEPROM_UID+1)<<8;
-kilolib.c:281:                        eeprom_write_byte(EEPROM_UID, kilo_uid&0xFF);
-kilolib.c:282:                        eeprom_write_byte(EEPROM_UID+1, (kilo_uid>>8)&0xFF);
-kilolib.c:292:                    kilo_uid = calibmsg->uid;
-kilolib.c:331:            if (kilo_uid&(1<<rx_msg.data[0]))
-kilolib.h:103:extern uint16_t kilo_uid;
+~/kilolib$ sed -n '90,115p' kilolib.c
+
+    rx_busy = 0;
+    rx_leadingbit = 1;
+    rx_leadingbyte = 1;
+    rx_byteindex = 0;
+    rx_bytevalue = 0;
+#ifndef BOOTLOADER
+    tx_mask = eeprom_read_byte(EEPROM_TXMASK);
+    if (tx_mask & ~TX_MASK_MAX)
+        tx_mask = TX_MASK_MIN;
+    tx_clock = 0;
+    tx_increment = 255;
+    kilo_ticks = 0;
+    kilo_state = IDLE;
+    kilo_tx_period = 3906;
+    kilo_uid = eeprom_read_byte(EEPROM_UID) | eeprom_read_byte(EEPROM_UID+1)<<8;
+    kilo_turn_left = eeprom_read_byte(EEPROM_LEFT_ROTATE);
+    kilo_turn_right = eeprom_read_byte(EEPROM_RIGHT_ROTATE);
+    kilo_straight_left = eeprom_read_byte(EEPROM_LEFT_STRAIGHT);
+    kilo_straight_right = eeprom_read_byte(EEPROM_RIGHT_STRAIGHT);
+
+    uint8_t i;
+    for (i=0; i<14; i++) {
+        kilo_irlow[i]=(eeprom_read_byte(EEPROM_IRLOW + i*2) <<8) | eeprom_read_byte(EEPROM_IRLOW + i*2+1);
+        kilo_irhigh[i]=(eeprom_read_byte(EEPROM_IRHIGH + i*2) <<8) | eeprom_read_byte(EEPROM_IRHIGH + i*2+1);
+    }
+srolab@srolab-Z170X-UD3:~/kilolib$ sed -n '265,300p' kilolib.c
+        case CHARGE:
+            kilo_state = CHARGING;
+            break;
+        case VOLTAGE:
+            kilo_state = BATTERY;
+            break;
+        case RUN:
+            if (kilo_state != SETUP && kilo_state != RUNNING) {
+                motors_on();
+                kilo_state = SETUP;
+            }
+            break;
+        case CALIB:
+            switch(calibmsg->mode) {
+                case CALIB_SAVE:
+                    if (kilo_state == MOVING) {
+                        eeprom_write_byte(EEPROM_UID, kilo_uid&0xFF);
+                        eeprom_write_byte(EEPROM_UID+1, (kilo_uid>>8)&0xFF);
+                        eeprom_write_byte(EEPROM_LEFT_ROTATE, kilo_turn_left);
+                        eeprom_write_byte(EEPROM_RIGHT_ROTATE, kilo_turn_right);
+                        eeprom_write_byte(EEPROM_LEFT_STRAIGHT, kilo_straight_left);
+                        eeprom_write_byte(EEPROM_RIGHT_STRAIGHT, kilo_straight_right);
+                        motors_off();
+                        kilo_state = IDLE;
+                    }
+                    break;
+                case CALIB_UID:
+                    kilo_uid = calibmsg->uid;
+                    cur_motion = MOVE_STOP;
+                    break;
+                case CALIB_TURN_LEFT:
+                    if (cur_motion != MOVE_LEFT || kilo_turn_left != calibmsg->turn_left) {
+                        prev_motion = MOVE_STOP;
+                        cur_motion = MOVE_LEFT;
+                        kilo_turn_left = calibmsg->turn_left;
+                    }
