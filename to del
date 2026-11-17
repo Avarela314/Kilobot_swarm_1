@@ -1,5 +1,28 @@
-cd ~/kilolib
-grep -R -n 'void message_send\|message_send(' --include='*.c' --include='*.h' .
+~/kilolib$ grep -R -n 'void message_send\|message_send(' --include='*.c' --include='*.h' 
+message_send.h:7:uint8_t message_send(const message_t *);
+kilolib.c:511:            if (message_send(msg)) {
+ohc.c:112:                    message_send(&msg);
+ohc.c:123:                message_send(&msg);
+ohc.c:133:                    message_send(&msg);
+ohc.c:149:                    message_send(&msg);
+ohc.c:167:                    message_send(&msg);
 
-cd ~/kilogui
-grep -n -E 'PACKET_FORWARDMSG|PACKET_STOP|sendMessage|calibStop|WAKEUP' src/packet.h src/kilowindow.cpp
+~/kilogui$ grep -n -E 'PACKET_FORWARDMSG|PACKET_STOP|sendMessage|calibStop|WAKEUP' src/packet.h src/kilowindow.cpp
+src/packet.h:6:    PACKET_STOP,
+src/packet.h:8:    PACKET_FORWARDMSG,
+src/packet.h:22:    WAKEUP,
+src/kilowindow.cpp:29:    {"Pause", WAKEUP},
+src/kilowindow.cpp:64:    connect(calib, SIGNAL(calibStop()), this, SLOT(calibStop()));
+src/kilowindow.cpp:161:    QObject::connect(mapper, SIGNAL(mapped(int)), this, SLOT(sendMessage(int)));
+src/kilowindow.cpp:199:    QObject::connect(mapper, SIGNAL(mapped(int)), this, SLOT(sendMessage(int)));
+src/kilowindow.cpp:353:        sendMessage(COMMAND_STOP);
+src/kilowindow.cpp:361:void KiloWindow::sendMessage(int type_int) {
+src/kilowindow.cpp:367:        packet[1] = PACKET_STOP;
+src/kilowindow.cpp:368:        packet[PACKET_SIZE-1]=PACKET_HEADER^PACKET_STOP;
+src/kilowindow.cpp:383:            packet[1] = PACKET_FORWARDMSG;
+src/kilowindow.cpp:385:            packet[PACKET_SIZE-1]=PACKET_HEADER^PACKET_FORWARDMSG^type;
+src/kilowindow.cpp:402:    uint8_t checksum = PACKET_HEADER^PACKET_FORWARDMSG^type;
+src/kilowindow.cpp:404:    packet[1] = PACKET_FORWARDMSG;
+src/kilowindow.cpp:422:void KiloWindow::calibStop() {
+src/kilowindow.cpp:424:        sendMessage(WAKEUP);
+src/kilowindow.cpp:425:        sendMessage(WAKEUP);
