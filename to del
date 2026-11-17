@@ -1,44 +1,15 @@
-~/kilogui$ sed -n '420,490p' src/kilowindow.cpp
-}
-
-void KiloWindow::calibStop() {
-    if (sending) {
-        sendMessage(WAKEUP);
-        sendMessage(WAKEUP);
-    }
-}
-
-void KiloWindow::calibSave() {
-    static calibmsg_t msg;
-    msg.mode = CALIB_SAVE;
-    sendDataMessage((uint8_t*)&msg, CALIB);
-}
-void KiloWindow::calibUID(int x) { 
-    static calibmsg_t msg;
-    msg.mode = CALIB_UID;
-    msg.uid = x;
-    sendDataMessage((uint8_t *)&msg, CALIB);
-}
-void KiloWindow::calibLeft(int x) {
-    static calibmsg_t msg;
-    msg.mode = CALIB_TURN_LEFT;
-    msg.turn_left = x;
-    sendDataMessage((uint8_t *)&msg, CALIB);
-}
-void KiloWindow::calibRight(int x) {
-    static calibmsg_t msg;
-    msg.mode = CALIB_TURN_RIGHT;
-    msg.turn_right = x;
-    sendDataMessage((uint8_t *)&msg, CALIB);
-}
-void KiloWindow::calibStraight(int x) {
-    static calibmsg_t msg;
-    msg.mode = CALIB_STRAIGHT;
-    msg.straight_left = x&0xFF;
-    msg.straight_right = (x>>8) & 0xFF;
-    sendDataMessage((uint8_t *)&msg, CALIB);
-}
-~/kilogui$ grep -n -E 'calibUID|sendDataMessage|calibStop' src/kilowindow.h
-62:    void sendDataMessage(uint8_t *, uint8_t);
-67:    void calibUID(int);
-72:    void calibStop();
+~/kilolib$ grep -n -E 'EEPROM_UID|kilo_uid[[:space:]]*=' kilolib.c
+18:#define EEPROM_UID            (uint8_t*)0xB0
+105:    kilo_uid = eeprom_read_byte(EEPROM_UID) | eeprom_read_byte(EEPROM_UID+1)<<8;
+281:                        eeprom_write_byte(EEPROM_UID, kilo_uid&0xFF);
+282:                        eeprom_write_byte(EEPROM_UID+1, (kilo_uid>>8)&0xFF);
+292:                    kilo_uid = calibmsg->uid;
+~/kilolib$ grep -R -n -E 'EEPROM_UID|EEPROM.*UID|kilo_uid'
+kilolib.c:18:#define EEPROM_UID            (uint8_t*)0xB0
+kilolib.c:56:uint16_t kilo_uid;                 // unique identifier (stored in EEPROM)
+kilolib.c:105:    kilo_uid = eeprom_read_byte(EEPROM_UID) | eeprom_read_byte(EEPROM_UID+1)<<8;
+kilolib.c:281:                        eeprom_write_byte(EEPROM_UID, kilo_uid&0xFF);
+kilolib.c:282:                        eeprom_write_byte(EEPROM_UID+1, (kilo_uid>>8)&0xFF);
+kilolib.c:292:                    kilo_uid = calibmsg->uid;
+kilolib.c:331:            if (kilo_uid&(1<<rx_msg.data[0]))
+kilolib.h:103:extern uint16_t kilo_uid;
